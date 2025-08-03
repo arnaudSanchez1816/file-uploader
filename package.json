@@ -1,0 +1,47 @@
+{
+  "name": "file-uploader",
+  "version": "1.0.0",
+  "description": "https://www.theodinproject.com/lessons/nodejs-file-uploader",
+  "bugs": {
+    "url": "https://github.com/arnaudSanchez1816/file-uploader/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arnaudSanchez1816/file-uploader.git"
+  },
+  "license": "ISC",
+  "author": "Arnaud Sanchez",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "dev": "node --watch ./index.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint .",
+    "tailwind": "npx @tailwindcss/cli -i ./stylesheets/style.css -o ./public/stylesheets/style.css --watch"
+  },
+  "dependencies": {
+    "cookie-parser": "^1.4.7",
+    "debug": "^4.4.1",
+    "dotenv": "^16.5.0",
+    "ejs": "^3.1.10",
+    "express": "^5.1.0",
+    "express-validator": "^7.2.1",
+    "http-errors": "^2.0.0",
+    "humps": "^2.0.1",
+    "morgan": "^1.10",
+    "multer": "^2.0.1",
+    "pg": "^8.16.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.28.0",
+    "@tailwindcss/cli": "^4.1.11",
+    "eslint": "^9.28.0",
+    "eslint-config-prettier": "^10.1.5",
+    "globals": "^16.2.0",
+    "prettier": "^3.5.3",
+    "prettier-plugin-tailwindcss": "^0.6.13",
+    "stylelint": "^16.20.0",
+    "stylelint-config-standard": "^38.0.0",
+    "tailwindcss": "^4.1.11"
+  }
+}
