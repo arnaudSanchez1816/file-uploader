@@ -20,6 +20,7 @@
     "tailwind": "npx @tailwindcss/cli -i ./stylesheets/style.css -o ./public/stylesheets/style.css --watch"
   },
   "dependencies": {
+    "@prisma/client": "^6.13.0",
     "cookie-parser": "^1.4.7",
     "debug": "^4.4.1",
     "dotenv": "^16.5.0",
@@ -40,6 +41,7 @@
     "globals": "^16.2.0",
     "prettier": "^3.5.3",
     "prettier-plugin-tailwindcss": "^0.6.13",
+    "prisma": "^6.13.0",
     "stylelint": "^16.20.0",
     "stylelint-config-standard": "^38.0.0",
     "tailwindcss": "^4.1.11"
