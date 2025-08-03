@@ -6,6 +6,10 @@ const cookieParser = require("cookie-parser")
 const createHttpError = require("http-errors")
 const debug = require("debug")("file-uploader:server")
 const http = require("http")
+const session = require("express-session")
+const { PrismaSessionStore } = require("@quixo3/prisma-session-store")
+const prismaClient = require("./db/client")
+const passport = require("./middlewares/passport")
 
 const app = express()
 
@@ -18,7 +22,26 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
 app.use(express.static(path.join(__dirname, "public")))
+// Session
+app.use(
+    session({
+        name: "session",
+        secret: process.env.SESSION_SECRET,
+        resave: false,
+        saveUninitialized: false,
+        cookie: { maxAge: 30 * 24 * 60 * 60 * 1000 }, // 30 days
+        store: new PrismaSessionStore(prismaClient, {
+            checkPeriod: 10 * 60 * 1000, // 10 minutes
+            dbRecordIdIsSessionId: true,
+            dbRecordIdFunction: undefined,
+        }),
+    })
+)
+// Passport
+app.use(passport.initialize())
+app.use(passport.session())
 
+// Routers
 app.use("/", require("./routes/index"))
 
 // 404 error
