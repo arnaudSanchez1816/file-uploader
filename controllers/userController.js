@@ -10,13 +10,28 @@ const {
     BODY_SIGN_IN_REDIRECT_TO,
 } = require("../middlewares/redirection")
 
-exports.getSignUp = (req, res, next) => {
-    res.render("signUp", {
-        email: req.query.email,
-    })
-}
+exports.getSignUp = [
+    parseRedirection(),
+    (req, res, next) => {
+        if (req.user) {
+            return res.redirect("/")
+        }
+        return next()
+    },
+    (req, res, next) => {
+        res.render("signUp", {
+            email: req.query.email,
+        })
+    },
+]
 
 exports.postSignUp = [
+    (req, res, next) => {
+        if (req.user) {
+            return res.redirect("/")
+        }
+        return next()
+    },
     body(["email", "password", "confirmPassword"])
         .exists()
         .withMessage("Field is missing.")
@@ -87,15 +102,29 @@ exports.postSignUp = [
 ]
 
 // Sign In
-exports.getSignIn = (req, res, next) => {
-    res.render("signIn", {
-        title: "Sign in",
-        email: req.query.email,
-        redirectTo: req.query[BODY_SIGN_IN_REDIRECT_TO],
-    })
-}
+exports.getSignIn = [
+    (req, res, next) => {
+        if (req.user) {
+            return res.redirect("/")
+        }
+        return next()
+    },
+    (req, res, next) => {
+        res.render("signIn", {
+            title: "Sign in",
+            email: req.query.email,
+            redirectTo: req.query[BODY_SIGN_IN_REDIRECT_TO],
+        })
+    },
+]
 
 exports.postSignIn = [
+    (req, res, next) => {
+        if (req.user) {
+            return res.redirect("/")
+        }
+        return next()
+    },
     body(["email", "password"])
         .exists()
         .withMessage("Field is missing.")
