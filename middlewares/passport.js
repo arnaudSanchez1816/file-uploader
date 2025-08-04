@@ -1,6 +1,6 @@
 const passport = require("passport")
 const { Strategy: LocalStrategy } = require("passport-local")
-const prisma = require("../db/client")
+const userService = require("../services/userService")
 const bcrypt = require("bcrypt")
 
 const INCORRECT_USERNAME_PASSWORD_MESSAGE = "Incorrect e-mail or password."
@@ -15,10 +15,8 @@ passport.use(
         async (username, password, done) => {
             try {
                 // Verify user
-                const user = await prisma.user.findUnique({
-                    where: {
-                        email: username,
-                    },
+                const user = await userService.getUserByEmail({
+                    email: username,
                 })
                 if (!user) {
                     return done(null, false, {
@@ -42,5 +40,18 @@ passport.use(
         }
     )
 )
+
+passport.serializeUser((user, done) => {
+    done(null, user.id)
+})
+
+passport.deserializeUser(async (id, done) => {
+    try {
+        const user = await userService.getUserById({ id: id })
+        done(null, user)
+    } catch (error) {
+        done(error)
+    }
+})
 
 module.exports = passport

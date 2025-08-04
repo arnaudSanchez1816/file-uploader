@@ -43,7 +43,21 @@ app.use(
 app.use(passport.initialize())
 app.use(passport.session())
 
+// Add user to locals
+app.use((req, res, next) => {
+    res.locals.user = req.user
+    next()
+})
+
+// Fill errors locals with flash errors
+app.use((req, res, next) => {
+    // Add passport flash errors to locals
+    res.locals.errors = req.flash("error")
+    next()
+})
+
 // Routers
+app.use("/", require("./routes/user"))
 app.use("/", require("./routes/index"))
 
 // 404 error
