@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>File Uploader</title>
+    </head>
+    <body>
+        <h1>Home</h1>
+        <div>
+            <p>Welcome <%= locals.user.email %>.</p>
+            <a href="/signout">Sign out</a>
+        </div>
+        <div>
+            <div>
+                <form action="/files" method="post" enctype="multipart/form-data">
+                    <div>
+                        <label for="file">File to upload</label>
+                        <input type="file" name="file" id="file">
+                    </div>
+                    <button type="submit">Upload</button>
+                </form>
+            </div>
+            <div>
+                <% if (locals.files.length <= 0) { %>
+                    <p>No files yet !</p>
+                <% } else { %>
+                    <% locals.files.forEach(file => { %>
+                        <%- include('./partials/components/file.ejs', { file }) %>
+                    <% }) %>
+                <% } %>
+            </div>
+        </div>
+    </body>
+</html>

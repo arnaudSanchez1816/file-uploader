@@ -1,0 +1,11 @@
+<div>
+    <span><%= file.name %></span>
+    <div>
+        <span>Upload at </span>
+        <span><%= file.uploadedAt.toString() %></span>
+    </div>
+    <a href="<%= `/files/${file.id}`%>">Download</a>
+    <form action="<%= `/files/${file.id}?_method=DELETE`%>" method="post">
+        <button type="submit">Delete</button>
+    </form>
+</div>

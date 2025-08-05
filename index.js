@@ -1,5 +1,6 @@
 require("dotenv").config()
 const express = require("express")
+const methodOverride = require("method-override")
 const path = require("path")
 const logger = require("morgan")
 const cookieParser = require("cookie-parser")
@@ -11,6 +12,17 @@ const session = require("express-session")
 const { PrismaSessionStore } = require("@quixo3/prisma-session-store")
 const prismaClient = require("./db/client")
 const passport = require("./middlewares/passport")
+const { isAuthenticated } = require("./middlewares/isAuthenticated")
+const fs = require("fs")
+
+if (process.env["FILES_DATA_PATH"] === undefined) {
+    throw new Error("Missing FILES_DATA_PATH env variable.")
+}
+
+// Create FILES_DATA_PATH folders
+if (!fs.existsSync(process.env.FILES_DATA_PATH)) {
+    fs.mkdirSync(process.env.FILES_DATA_PATH, { recursive: true })
+}
 
 const app = express()
 
@@ -24,6 +36,8 @@ app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
 app.use(flash())
 app.use(express.static(path.join(__dirname, "public")))
+// Replace request http method to the method given in _method query parameter.
+app.use(methodOverride("_method"))
 // Session
 app.use(
     session({
@@ -52,11 +66,13 @@ app.use((req, res, next) => {
 // Fill errors locals with flash errors
 app.use((req, res, next) => {
     // Add passport flash errors to locals
-    res.locals.errors = req.flash("error")
+    //res.locals.errors = req.flash("error")
     next()
 })
 
 // Routers
+app.use("/home", isAuthenticated(), require("./routes/home"))
+app.use("/files", isAuthenticated(), require("./routes/files"))
 app.use("/", require("./routes/user"))
 app.use("/", require("./routes/index"))
 

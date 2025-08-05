@@ -10,27 +10,18 @@ const {
     BODY_SIGN_IN_REDIRECT_TO,
 } = require("../middlewares/redirection")
 
-exports.getSignUp = [
-    parseRedirection(),
-    (req, res, next) => {
-        if (req.user) {
-            return res.redirect("/")
-        }
-        return next()
-    },
-    (req, res, next) => {
-        res.render("signUp", {
-            email: req.query.email,
-        })
-    },
-]
+exports.getSignUp = (req, res, next) => {
+    res.render("signUp", {
+        email: req.query.email,
+    })
+}
 
 exports.postSignUp = [
     (req, res, next) => {
-        if (req.user) {
+        if (req.isAuthenticated()) {
             return res.redirect("/")
         }
-        return next()
+        next()
     },
     body(["email", "password", "confirmPassword"])
         .exists()
@@ -79,9 +70,9 @@ exports.postSignUp = [
                 "error",
                 errors.array().map((err) => err.msg)
             )
-            const queryParams = new URLSearchParams()
-            queryParams.append("email", req.body.email)
-            return res.redirect(`/signup?${queryParams.toString()}`)
+            return res.redirect(
+                `/signup?${new URLSearchParams({ email: req.body.email })}`
+            )
         }
         const { email, password } = matchedData(req)
 
@@ -104,12 +95,6 @@ exports.postSignUp = [
 // Sign In
 exports.getSignIn = [
     (req, res, next) => {
-        if (req.user) {
-            return res.redirect("/")
-        }
-        return next()
-    },
-    (req, res, next) => {
         res.render("signIn", {
             title: "Sign in",
             email: req.query.email,
@@ -120,10 +105,10 @@ exports.getSignIn = [
 
 exports.postSignIn = [
     (req, res, next) => {
-        if (req.user) {
+        if (req.isAuthenticated()) {
             return res.redirect("/")
         }
-        return next()
+        next()
     },
     body(["email", "password"])
         .exists()
