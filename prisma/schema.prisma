@@ -19,6 +19,8 @@ model Session {
   sid       String   @unique
   data      String
   expiresAt   DateTime @map("expires_at")
+
+  @@map("sessions")
 }
 
 model User {
@@ -26,12 +28,26 @@ model User {
   email String @unique
   password String
   files File[]
+
+  @@map("users")
 }
 
 model File {
   id Int @id @default(autoincrement())
   name String
-  uploadedAt DateTime @db.Timestamptz @map("uploaded_at")
+  createdAt DateTime @db.Timestamptz @map("created_at")
+  type FileType @default(FOLDER)
   owner User @relation(fields: [ownerId], references: [id])
   ownerId Int @map("owner_id")
+  
+  parentId Int? @map("parent_id")
+  parent File? @relation("ChildFiles", fields: [parentId], references: [id])
+  childFiles File[] @relation("ChildFiles")
+
+  @@map("files")
+}
+
+enum FileType {
+  FILE
+  FOLDER
 }
