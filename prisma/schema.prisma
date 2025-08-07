@@ -35,7 +35,7 @@ model User {
 model File {
   id Int @id @default(autoincrement())
   name String
-  createdAt DateTime @db.Timestamptz @map("created_at")
+  createdAt DateTime @db.Timestamptz @default(now()) @map("created_at")
   type FileType @default(FOLDER)
   owner User @relation(fields: [ownerId], references: [id])
   ownerId Int @map("owner_id")
