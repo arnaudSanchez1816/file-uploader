@@ -1,9 +1,13 @@
 const path = require("path")
+const { FileType } = require("../generated/prisma/client")
 // Extends prisma client to add a path field
 const prisma = require("../db/client").$extends({
     result: {
         file: {
             path: {
+                needs: {
+                    type: FileType.FILE,
+                },
                 compute(file) {
                     return path.join(process.env.FILES_DATA_PATH, `${file.id}`)
                 },
@@ -12,12 +16,14 @@ const prisma = require("../db/client").$extends({
     },
 })
 
-exports.createFile = async ({ name, ownerId }) => {
+exports.createFile = async ({ name, ownerId, parentId = null }) => {
     return prisma.file.create({
         data: {
             name,
             ownerId,
-            uploadedAt: new Date(),
+            createdAt: new Date(),
+            type: FileType.FILE,
+            parentId,
         },
     })
 }
@@ -26,26 +32,29 @@ exports.deleteFile = async ({ fileId }) => {
     return prisma.file.delete({
         where: {
             id: fileId,
+            type: FileType.FILE,
         },
     })
 }
 
 exports.getFileById = async ({ fileId, ownerId = null }) => {
-    let deleteInput
+    let getFileInput
     if (ownerId) {
-        deleteInput = {
+        getFileInput = {
             where: {
                 id: fileId,
                 ownerId: ownerId,
+                type: FileType.FILE,
             },
         }
     } else {
-        deleteInput = {
+        getFileInput = {
             where: {
                 id: fileId,
+                type: FileType.FILE,
             },
         }
     }
 
-    return prisma.file.findUnique(deleteInput)
+    return prisma.file.findUnique(getFileInput)
 }

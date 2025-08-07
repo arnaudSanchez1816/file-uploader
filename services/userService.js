@@ -27,15 +27,16 @@ class UserService {
         return user
     }
 
-    async emailIsUsed({ email }) {
-        const isUsed =
-            (await prisma.user.findFirst({
-                where: {
-                    email: email,
-                },
-            })) !== null
+    async emailIsUsed({ userEmail }) {
+        const user = await prisma.user.findFirst({
+            where: {
+                email: userEmail,
+            },
+        })
 
-        return isUsed
+        console.dir(user)
+
+        return user !== null
     }
 
     async createNewUser({ email, password }) {

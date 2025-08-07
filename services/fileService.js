@@ -1,19 +1,19 @@
 const fileRepository = require("../repositories/fileRepository")
 const fs = require("fs/promises")
+const sanitizeFilename = require("sanitize-filename")
 
-exports.uploadFile = async (userId, file) => {
+exports.uploadFile = async ({ userId, file, parentId = null }) => {
     if (!file) {
         throw new Error("No file provided for upload.")
     }
 
-    const fileName = file.originalname
+    const fileName = sanitizeFilename(file.originalname)
     const createdFile = await fileRepository.createFile({
         name: fileName,
         ownerId: userId,
+        parentId,
     })
     try {
-        console.log(createdFile)
-
         await fs.writeFile(createdFile.path, file.buffer)
         return createdFile
     } catch (error) {

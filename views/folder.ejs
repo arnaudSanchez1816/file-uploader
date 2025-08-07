@@ -6,14 +6,18 @@
         <title>File Uploader</title>
     </head>
     <body>
-        <h1>Home</h1>
+        <h1><%= locals.folder.name %></h1>
         <div>
             <p>Welcome <%= locals.user.email %>.</p>
             <a href="/signout">Sign out</a>
         </div>
         <div>
             <div>
+                <a href="<%= folder.parentId ? `/folders/${folder.parentId}` : "/home" %>">Back</a>
+            </div>
+            <div>
                 <form action="/files" method="post" enctype="multipart/form-data">
+                    <input type="hidden" name="parentId" value="<%= folder.id %>">
                     <div>
                         <label for="file">File to upload</label>
                         <input type="file" name="file" id="file">
@@ -21,6 +25,7 @@
                     <button type="submit">Upload</button>
                 </form>
                 <form action="/folders" method="post">
+                    <input type="hidden" name="parentId" value="<%= folder.parentId || null %>">
                     <div>
                         <label for="folder-name">New folder : </label>
                         <input type="text" name="folderName" id="folder-name" required>
@@ -30,10 +35,10 @@
             </div>
             <div>
                 <p>Files</p>
-                <% if (locals.files.length <= 0) { %>
+                <% if (locals.folder.childFiles.length <= 0) { %>
                     <p>No files yet !</p>
                 <% } else { %>
-                    <% locals.files.forEach(file => { %>
+                    <% locals.folder.childFiles.forEach(file => { %>
                         <% if(file.type === FileType.FILE) {%>
                             <%- include('./partials/components/file.ejs', { file }) %>
                         <% } else { %>

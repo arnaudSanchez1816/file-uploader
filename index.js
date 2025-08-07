@@ -9,6 +9,7 @@ const debug = require("debug")("file-uploader:server")
 const flash = require("connect-flash")
 const http = require("http")
 const session = require("express-session")
+const helmet = require("helmet")
 const { PrismaSessionStore } = require("@quixo3/prisma-session-store")
 const prismaClient = require("./db/client")
 const passport = require("./middlewares/passport")
@@ -26,11 +27,16 @@ if (!fs.existsSync(process.env.FILES_DATA_PATH)) {
 
 const app = express()
 
+app.disable("x-powered-by")
 // view engine setup
 app.set("views", path.join(__dirname, "views"))
 app.set("view engine", "ejs")
-
-app.use(logger("dev"))
+app.use(helmet())
+if (app.get("env") === "production") {
+    app.use(logger("combined"))
+} else {
+    app.use(logger("dev"))
+}
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
@@ -66,13 +72,14 @@ app.use((req, res, next) => {
 // Fill errors locals with flash errors
 app.use((req, res, next) => {
     // Add passport flash errors to locals
-    //res.locals.errors = req.flash("error")
+    res.locals.errors = req.flash("error")
     next()
 })
 
 // Routers
 app.use("/home", isAuthenticated(), require("./routes/home"))
 app.use("/files", isAuthenticated(), require("./routes/files"))
+app.use("/folders", isAuthenticated(), require("./routes/folders"))
 app.use("/", require("./routes/user"))
 app.use("/", require("./routes/index"))
 

@@ -35,7 +35,9 @@ exports.postSignUp = [
         .custom(async (value) => {
             // Check email is not already used
             try {
-                const emailIsUsed = await userService.emailIsUsed({ value })
+                const emailIsUsed = await userService.emailIsUsed({
+                    userEmail: value,
+                })
                 if (emailIsUsed) {
                     throw new Error("E-mail already in use.")
                 }
@@ -78,7 +80,7 @@ exports.postSignUp = [
 
         try {
             const newUser = await userService.createNewUser({ email, password })
-            debug(`New user created.\n${newUser}`)
+            debug(`New user created.\n${newUser.toString()}`)
 
             req.login(newUser, function (err) {
                 if (err) {

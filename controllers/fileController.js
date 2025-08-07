@@ -1,6 +1,11 @@
 const multer = require("multer")
 const fileService = require("../services/fileService")
-const { param, matchedData, validationResult } = require("express-validator")
+const {
+    param,
+    matchedData,
+    validationResult,
+    body,
+} = require("express-validator")
 const createHttpError = require("http-errors")
 
 const upload = multer({
@@ -17,11 +22,24 @@ const fileIdValidation = () =>
 
 exports.uploadFile = [
     upload.single("file"),
+    body("parentId")
+        .default(null)
+        .if(body("parentId").custom((value) => value !== null))
+        .isInt({ min: 1 })
+        .toInt(),
     async (req, res, next) => {
         try {
+            const errors = validationResult(req).throw()
+
             const userId = req.user.id
+            const { parentId } = matchedData(req)
             const { file } = req
-            const createdFile = await fileService.uploadFile(userId, file)
+
+            const createdFile = await fileService.uploadFile({
+                userId,
+                file,
+                parentId,
+            })
 
             res.redirect("/")
         } catch (error) {
