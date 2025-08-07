@@ -41,7 +41,7 @@ model File {
   ownerId Int @map("owner_id")
   
   parentId Int? @map("parent_id")
-  parent File? @relation("ChildFiles", fields: [parentId], references: [id])
+  parent File? @relation("ChildFiles", fields: [parentId], references: [id], onDelete: Cascade)
   childFiles File[] @relation("ChildFiles")
 
   @@map("files")
