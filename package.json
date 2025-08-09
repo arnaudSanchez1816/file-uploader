@@ -19,7 +19,7 @@
     "lint": "eslint .",
     "tailwind": "npx @tailwindcss/cli -i ./stylesheets/style.css -o ./public/stylesheets/style.css --watch",
     "migrate": "npx prisma migrate dev --name $npm_config_name",
-    "generate": "npx prisma generate"
+    "generate": "npx prisma generate --sql"
   },
   "dependencies": {
     "@prisma/client": "^6.13.0",

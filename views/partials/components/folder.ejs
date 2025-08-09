@@ -2,4 +2,7 @@
     <a href="<%= `/folders/${locals.folder.id}` %>">
         <%= `./${locals.folder.name}` %>
     </a>
+    <form action="<%= `/folders/${folder.id}?_method=DELETE`%>" method="post">
+        <button type="submit">Delete</button>
+    </form>
 </div>

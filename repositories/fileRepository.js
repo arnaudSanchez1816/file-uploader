@@ -1,15 +1,11 @@
-const path = require("path")
 const { FileType } = require("../generated/prisma/client")
-// Extends prisma client to add a path field
+const { computeFilePath } = require("../utils/filesUtils")
 const prisma = require("../db/client").$extends({
     result: {
         file: {
             path: {
-                needs: {
-                    type: FileType.FILE,
-                },
                 compute(file) {
-                    return path.join(process.env.FILES_DATA_PATH, `${file.id}`)
+                    return computeFilePath(file.id)
                 },
             },
         },

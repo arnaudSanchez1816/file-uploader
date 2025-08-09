@@ -41,7 +41,7 @@ exports.uploadFile = [
                 parentId,
             })
 
-            res.redirect("/")
+            res.redirect(parentId ? `/folders/${parentId}` : "/")
         } catch (error) {
             next(error)
         }

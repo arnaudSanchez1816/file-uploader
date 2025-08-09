@@ -35,7 +35,11 @@ exports.getFolder = [
 ]
 
 exports.createFolder = [
-    body("parentId").optional({ values: "null" }).isInt({ min: 1 }),
+    body("parentId")
+        .default(null)
+        .if(body("parentId").custom((value) => value !== null))
+        .isInt({ min: 1 })
+        .toInt(),
     body("folderName").exists().trim().escape().isString(),
     async (req, res, next) => {
         validationResult(req).throw()
@@ -49,5 +53,32 @@ exports.createFolder = [
         )
 
         res.redirect(`/folders/${folder.id}`)
+    },
+]
+
+exports.deleteFolder = [
+    param("folderId").exists().isInt({ min: 1 }).toInt(),
+    async (req, res, next) => {
+        const errors = validationResult(req).throw()
+
+        const { folderId } = matchedData(req)
+        const userId = req.user.id
+
+        const folder = await folderService.getFolderById(folderId)
+        if (!folder) {
+            throw new createHttpError.NotFound("Folder does not exists.")
+        }
+        if (folder.ownerId !== userId) {
+            throw new createHttpError.Unauthorized()
+        }
+
+        const deletedFolder = await folderService.deleteFolder(folderId)
+        if (!deletedFolder) {
+            return res.redirect("/")
+        }
+
+        return res.redirect(
+            deletedFolder.parentId ? `/folders/${deletedFolder.parentId}` : "/"
+        )
     },
 ]
