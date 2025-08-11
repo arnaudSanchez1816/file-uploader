@@ -32,6 +32,7 @@
             </div>
             <div>
                 <p>Files</p>
+                <%- include('partials/components/breadcrumbs.ejs', { breadcrumbs }) %>
                 <% if (folder) { %>
                     <div>
                         <a href="<%= folder.parentId ? `/folders/${folder.parentId}` : "/home" %>">../</a>

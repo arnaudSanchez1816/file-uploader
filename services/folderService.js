@@ -13,6 +13,50 @@ exports.createFolder = async (userId, folderName, parentId = null) => {
     return createdFolder
 }
 
+exports.getFolderData = async (folderId) => {
+    const folder = await folderRepository.getFolderById(folderId, {
+        includeChildren: true,
+    })
+    let breadcrumbs = []
+    if (folder) {
+        breadcrumbs = await getFolderBreadcrumbs(folderId)
+    }
+
+    return {
+        folder,
+        breadcrumbs,
+    }
+}
+
+async function getFolderBreadcrumbs(folderId) {
+    const breadCrumbs = []
+
+    if (folderId !== null) {
+        const folderTree = await folderRepository.getFolderTree(folderId)
+        let treeNode = folderTree
+        while (treeNode.level <= 0) {
+            const { name, id, level } = treeNode
+            breadCrumbs.push({
+                name: name,
+                link: `/folders/${id}`,
+                current: level === 0,
+            })
+
+            if (!treeNode.childFiles || treeNode.childFiles.length <= 0) {
+                break
+            }
+            treeNode = treeNode.childFiles[0]
+        }
+    }
+    breadCrumbs.unshift({
+        name: "Home",
+        link: "/",
+        current: false,
+    })
+
+    return breadCrumbs
+}
+
 exports.getFolderById = async (folderId, { includeChildren = false } = {}) => {
     return folderRepository.getFolderById(folderId, { includeChildren })
 }
@@ -32,8 +76,8 @@ function deleteFolderTree(folderTree) {
         return
     }
 
-    const { type, id, childFiles } = folderTree
-    if (type === FileType.FILE) {
+    const { type, id, childFiles, level } = folderTree
+    if (level > 0 && type === FileType.FILE) {
         fs.unlink(computeFilePath(id))
     }
 

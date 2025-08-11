@@ -1,4 +1,5 @@
 const prisma = require("../db/client")
+const { FileType } = require("../generated/prisma/client")
 
 exports.getHomeData = async ({ userId }) => {
     const userFiles = await prisma.file.findMany({
@@ -10,6 +11,40 @@ exports.getHomeData = async ({ userId }) => {
             name: "asc",
         },
     })
+    const breadcrumbs = getHomeBreadcrumbs()
 
-    return userFiles
+    return {
+        folder: {
+            id: null,
+            name: "Home",
+            parentId: null,
+            ownerId: userId,
+            type: FileType.FOLDER,
+            createdAt: null,
+            childFiles: userFiles,
+        },
+        breadcrumbs,
+    }
+}
+
+exports.getHomeBreadcrumbs = () => {
+    const breadCrumbs = []
+    breadCrumbs.unshift({
+        name: "Home",
+        link: "/",
+        current: true,
+    })
+
+    return breadCrumbs
+}
+
+function getHomeBreadcrumbs() {
+    const breadCrumbs = []
+    breadCrumbs.unshift({
+        name: "Home",
+        link: "/",
+        current: true,
+    })
+
+    return breadCrumbs
 }

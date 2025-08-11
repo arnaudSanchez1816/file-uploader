@@ -1,0 +1,13 @@
+<div class="breadcrumbs text-sm">
+    <ul>
+        <% breadcrumbs.forEach(bc => { %>
+            <% if (bc.current) { %>
+                <li><%= bc.name %></li>
+            <% } else { %>
+                <li>
+                    <a href="<%= bc.link %>"><%= bc.name %></a>
+                </li>
+            <% } %>
+        <% }) %>
+    </ul>
+</div>

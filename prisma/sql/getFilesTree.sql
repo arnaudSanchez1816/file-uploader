@@ -1,11 +1,26 @@
 WITH RECURSIVE filesTree AS (
-    (SELECT id, name, created_at, type, owner_id, parent_id, 1 AS level
-    FROM files
-    WHERE id = $1)
+    SELECT id, name, created_at, type, owner_id, parent_id, 0 AS level
+    FROM file_uploader.files
+    WHERE id = $1
+), goDown AS (
+    TABLE filesTree
     UNION ALL
     (SELECT t.id, t.name, t.created_at, t.type, t.owner_id, t.parent_id, ft.level + 1
-    FROM filesTree ft
-    INNER JOIN files t ON t.parent_id = ft.id)
+    FROM file_uploader.files t
+    INNER JOIN goDown ft ON t.parent_id = ft.id)
+) CYCLE id SET is_cycle USING path
+, goUp AS (
+    TABLE filesTree
+    UNION ALL
+    (SELECT t.id, t.name, t.created_at, t.type, t.owner_id, t.parent_id, ft.level - 1
+    FROM file_uploader.files t
+    INNER JOIN goUp ft ON t.id = ft.parent_id)
+) CYCLE id SET is_cycle USING path
+, results AS (
+    SELECT *
+    FROM goDown
+    UNION
+    (SELECT * FROM goUp)
 )
 
 SELECT 
@@ -15,16 +30,8 @@ SELECT
     ft.type, 
     ft.owner_id AS "ownerId",
     ft.parent_id AS "parentId",
-    (CASE WHEN ft.parent_id IS NOT NULL 
-        THEN json_build_object(
-            'id', p.id,
-            'name', p.name,
-            'createdAt', p.created_at,
-            'type', p.type,
-            'ownerId', p.owner_id,
-            'parentId', p.parent_id
-    )END) AS "parent"
-FROM filesTree ft
-LEFT JOIN files p ON ft.parent_id = p.id
-LEFT JOIN users u ON ft.owner_id = u.id
+    ft.level AS "level"
+FROM results ft
+LEFT JOIN file_uploader.files p ON ft.parent_id = p.id
+LEFT JOIN file_uploader.users u ON ft.owner_id = u.id
 ORDER BY ft.level;

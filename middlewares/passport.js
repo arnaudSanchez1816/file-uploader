@@ -1,7 +1,7 @@
 const passport = require("passport")
 const { Strategy: LocalStrategy } = require("passport-local")
 const userService = require("../services/userService")
-const bcrypt = require("bcrypt")
+const bcrypt = require("bcryptjs")
 
 const INCORRECT_USERNAME_PASSWORD_MESSAGE = "Incorrect e-mail or password."
 

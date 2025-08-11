@@ -1,14 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>File Uploader</title>
-    </head>
-    <body>
-        <h1>Home</h1>
+<%- include('partials/head.ejs') %>
+<div class="drawer">
+    <input id="my-drawer" type="checkbox" class="drawer-toggle" />
+    <div class="drawer-content">
+        <!-- Page content here -->
+        <label for="my-drawer" class="btn btn-primary drawer-button">Open drawer</label>
+        <h1 class="text-5xl"><%= folder.name %></h1>
         <div>
-            <p>Welcome <%= locals.user.email %>.</p>
+            <p class="font-bold text-2xl">Welcome <%= locals.user.email %>.</p>
             <a href="/signout">Sign out</a>
         </div>
         <div>
@@ -30,10 +28,11 @@
             </div>
             <div>
                 <p>Files</p>
-                <% if (locals.files.length <= 0) { %>
+                <%- include('partials/components/breadcrumbs.ejs', { breadcrumbs }) %>
+                <% if (folder.childFiles.length <= 0) { %>
                     <p>No files yet !</p>
                 <% } else { %>
-                    <% locals.files.forEach(file => { %>
+                    <% folder.childFiles.forEach(file => { %>
                         <% if(file.type === FileType.FILE) {%>
                             <%- include('./partials/components/file.ejs', { file }) %>
                         <% } else { %>
@@ -43,5 +42,14 @@
                 <% } %>
             </div>
         </div>
-    </body>
-</html>
+    </div>
+    <div class="drawer-side">
+        <label for="my-drawer" aria-label="close sidebar" class="drawer-overlay"></label>
+        <ul class="menu bg-base-200 text-base-content min-h-full w-80 p-4">
+            <!-- Sidebar content here -->
+            <li><a>Sidebar Item 1</a></li>
+            <li><a>Sidebar Item 2</a></li>
+        </ul>
+    </div>
+</div>
+<%- include('partials/footer.ejs') %>
