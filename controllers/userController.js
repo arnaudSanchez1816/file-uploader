@@ -4,11 +4,6 @@ const createHttpError = require("http-errors")
 const hashPasswordSanitizer = require("../utils/hashPasswordSanitizer")
 const debug = require("debug")("file-uploader:users")
 const passport = require("../middlewares/passport")
-const {
-    parseRedirection,
-    tryRedirection,
-    BODY_SIGN_IN_REDIRECT_TO,
-} = require("../middlewares/redirection")
 
 exports.getSignUp = (req, res, next) => {
     res.render("signUp", {
@@ -90,54 +85,43 @@ exports.postSignUp = [
 exports.postSignIn = [
     (req, res, next) => {
         if (req.isAuthenticated()) {
-            return res.redirect("/")
+            return res.redirect("/home")
         }
         next()
     },
     body(["email", "password"])
         .exists()
-        .withMessage("Field is missing.")
+        .withMessage("Must not be empty")
         .isString()
         .notEmpty()
-        .withMessage("Field must not be empty."),
-    body("email").isEmail(),
-    parseRedirection(),
+        .withMessage("Must not be empty"),
+    body("email").isEmail().withMessage("E-mail is invalid"),
     (req, res, next) => {
-        const errors = validationResult(req).array()
-
-        if (errors.length > 0) {
-            // Redirect validation errors
-            req.flash(
-                "error",
-                errors
-                    .filter((err) => err.path !== BODY_SIGN_IN_REDIRECT_TO)
-                    .map((err) => err.msg)
-            )
-            const queryParams = new URLSearchParams()
-            queryParams.append("email", req.body.email)
-            if (req.body[BODY_SIGN_IN_REDIRECT_TO]) {
-                queryParams.append(
-                    BODY_SIGN_IN_REDIRECT_TO,
-                    req.body[BODY_SIGN_IN_REDIRECT_TO]
-                )
-            }
-            return res.redirect(`/${queryParams.toString()}`)
+        const errors = validationResult(req)
+        if (!errors.isEmpty()) {
+            const errorsMapped = errors.mapped()
+            return res.status(400).render("index", {
+                errors: errorsMapped,
+                email: req.body.email,
+            })
         }
         next()
     },
     passport.authenticate("local", {
+        successRedirect: "/home",
         failWithError: true,
         failureFlash: true,
     }),
-    tryRedirection,
-    (req, res, next) => {
-        res.redirect("/")
-    },
     (error, req, res, next) => {
-        // Redirect authenticate error
-        const queryParams = new URLSearchParams()
-        queryParams.append("email", req.body.email)
-        return res.redirect(`/?${queryParams.toString()}`)
+        return res.status(401).render("index", {
+            errors: {
+                auth: {
+                    msg: req.flash("error"),
+                    path: "auth",
+                },
+            },
+            email: req.body.email,
+        })
     },
 ]
 
