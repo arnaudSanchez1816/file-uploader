@@ -25,27 +25,24 @@ exports.postSignUp = [
     },
     body(["email", "password", "confirmPassword"])
         .exists()
-        .withMessage("Field is missing.")
+        .bail({ level: "request" })
+        .withMessage("Required")
         .isString()
         .notEmpty()
-        .withMessage("Field must not be empty."),
+        .withMessage("Required"),
     body("email")
         .isEmail()
-        .withMessage("Invalid e-mail.")
+        .bail({ level: "chain" })
+        .withMessage("E-mail address is not valid")
         .custom(async (value) => {
             // Check email is not already used
-            try {
-                const emailIsUsed = await userService.emailIsUsed({
-                    userEmail: value,
-                })
-                if (emailIsUsed) {
-                    throw new Error("E-mail already in use.")
-                }
-            } catch (error) {
-                throw createHttpError(500, error.message)
+            const emailIsUsed = await userService.emailIsUsed({
+                userEmail: value,
+            })
+            if (emailIsUsed) {
+                throw new Error("E-mail is already used")
             }
-        })
-        .withMessage("E-mail provided is already in use."),
+        }),
     body("password")
         .isStrongPassword({
             minLength: 8,
@@ -55,26 +52,21 @@ exports.postSignUp = [
             minSymbols: 0,
         })
         .withMessage(
-            "Invalid password. A valid password must be at least 8 characters long and contain at least 1 lower case character, 1 upper case character and 1 number."
+            "Must be at least 8 characters long, including:<br>At least one number<br>At least one lowercase letter<br>At least one uppercase letter"
         ),
     body("confirmPassword")
         .custom((value, { req }) => {
             return value === req.body.password
         })
-        .withMessage(
-            "The password and password confirmation fields must be identical."
-        ),
+        .withMessage("Passwords do not match"),
     body("password").customSanitizer(hashPasswordSanitizer),
     async function (req, res, next) {
         const errors = validationResult(req)
         if (!errors.isEmpty()) {
-            req.flash(
-                "error",
-                errors.array().map((err) => err.msg)
-            )
-            return res.redirect(
-                `/signup?${new URLSearchParams({ email: req.body.email })}`
-            )
+            return res.status(400).render("signUp", {
+                email: req.body.email,
+                errors: errors.mapped(),
+            })
         }
         const { email, password } = matchedData(req)
 

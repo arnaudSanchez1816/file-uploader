@@ -10,11 +10,8 @@
     --color-black: #000;
     --spacing: 0.25rem;
     --container-sm: 24rem;
-    --container-md: 28rem;
     --text-sm: 0.875rem;
     --text-sm--line-height: calc(1.25 / 0.875);
-    --text-lg: 1.125rem;
-    --text-lg--line-height: calc(1.75 / 1.125);
     --text-xl: 1.25rem;
     --text-xl--line-height: calc(1.75 / 1.25);
     --text-2xl: 1.5rem;
@@ -630,6 +627,9 @@
       }
     }
   }
+  .visible {
+    visibility: visible;
+  }
   .input {
     cursor: text;
     border: var(--border) solid #0000;
@@ -833,21 +833,6 @@
     input:checked ~ .swap-on, input:indeterminate ~ .swap-indeterminate {
       opacity: 100%;
       backface-visibility: visible;
-    }
-  }
-  .avatar {
-    position: relative;
-    display: inline-flex;
-    vertical-align: middle;
-    & > div {
-      display: block;
-      aspect-ratio: 1 / 1;
-      overflow: hidden;
-    }
-    img {
-      height: 100%;
-      width: 100%;
-      object-fit: cover;
     }
   }
   .checkbox {
@@ -1203,15 +1188,6 @@
   .mr-\[\.5ch\] {
     margin-right: .5ch;
   }
-  .mr-\[1\.5ch\] {
-    margin-right: 1.5ch;
-  }
-  .mr-\[1ch\] {
-    margin-right: 1ch;
-  }
-  .mr-\[1rem\] {
-    margin-right: 1rem;
-  }
   .status {
     display: inline-block;
     aspect-ratio: 1 / 1;
@@ -1237,26 +1213,6 @@
     @supports (color: color-mix(in lab, red, red)) {
       box-shadow: 0 2px 3px -1px color-mix(in oklab, currentColor calc(var(--depth) * 100%), #0000);
     }
-  }
-  .badge {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: calc(0.25rem * 2);
-    border-radius: var(--radius-selector);
-    vertical-align: middle;
-    color: var(--badge-fg);
-    border: var(--border) solid var(--badge-color, var(--color-base-200));
-    font-size: 0.875rem;
-    width: fit-content;
-    padding-inline: calc(0.25rem * 3 - var(--border));
-    background-size: auto, calc(var(--noise) * 100%);
-    background-image: none, var(--fx-noise);
-    background-color: var(--badge-bg);
-    --badge-bg: var(--badge-color, var(--color-base-100));
-    --badge-fg: var(--color-base-content);
-    --size: calc(var(--size-selector, 0.25rem) * 6);
-    height: var(--size);
   }
   .navbar {
     display: flex;
@@ -1293,12 +1249,6 @@
   .inline-block {
     display: inline-block;
   }
-  .btn-circle {
-    border-radius: calc(infinity * 1px);
-    padding-inline: calc(0.25rem * 0);
-    width: var(--size);
-    height: var(--size);
-  }
   .btn-square {
     padding-inline: calc(0.25rem * 0);
     width: var(--size);
@@ -1310,23 +1260,11 @@
   .h-6 {
     height: calc(var(--spacing) * 6);
   }
-  .h-8 {
-    height: calc(var(--spacing) * 8);
-  }
-  .h-10 {
-    height: calc(var(--spacing) * 10);
-  }
   .h-\[1em\] {
     height: 1em;
   }
-  .h-\[1rem\] {
-    height: 1rem;
-  }
   .h-\[2em\] {
     height: 2em;
-  }
-  .h-\[2rem\] {
-    height: 2rem;
   }
   .min-h-full {
     min-height: 100%;
@@ -1340,12 +1278,6 @@
   .w-6 {
     width: calc(var(--spacing) * 6);
   }
-  .w-8 {
-    width: calc(var(--spacing) * 8);
-  }
-  .w-10 {
-    width: calc(var(--spacing) * 10);
-  }
   .w-24 {
     width: calc(var(--spacing) * 24);
   }
@@ -1355,38 +1287,20 @@
   .w-80 {
     width: calc(var(--spacing) * 80);
   }
-  .w-fit {
-    width: fit-content;
-  }
   .w-full {
     width: 100%;
   }
   .w-sm {
     width: var(--container-sm);
   }
-  .max-w-md {
-    max-width: var(--container-md);
-  }
   .max-w-sm {
     max-width: var(--container-sm);
-  }
-  .min-w-0 {
-    min-width: calc(var(--spacing) * 0);
   }
   .flex-1 {
     flex: 1;
   }
   .shrink-0 {
     flex-shrink: 0;
-  }
-  .grow {
-    flex-grow: 1;
-  }
-  .basis-0 {
-    flex-basis: calc(var(--spacing) * 0);
-  }
-  .basis-full {
-    flex-basis: 100%;
   }
   .swap-rotate {
     .swap-on, input:indeterminate ~ .swap-on {
@@ -1418,9 +1332,6 @@
   .flex-col {
     flex-direction: column;
   }
-  .justify-between {
-    justify-content: space-between;
-  }
   .gap-2 {
     gap: calc(var(--spacing) * 2);
   }
@@ -1441,9 +1352,6 @@
   }
   .rounded-box {
     border-radius: var(--radius-box);
-  }
-  .rounded-full {
-    border-radius: calc(infinity * 1px);
   }
   .border-2 {
     border-style: var(--tw-border-style);
@@ -1470,11 +1378,8 @@
   .p-4 {
     padding: calc(var(--spacing) * 4);
   }
-  .py-6 {
-    padding-block: calc(var(--spacing) * 6);
-  }
-  .text-center {
-    text-align: center;
+  .px-4 {
+    padding-inline: calc(var(--spacing) * 4);
   }
   .text-2xl {
     font-size: var(--text-2xl);
@@ -1483,10 +1388,6 @@
   .text-5xl {
     font-size: var(--text-5xl);
     line-height: var(--tw-leading, var(--text-5xl--line-height));
-  }
-  .text-lg {
-    font-size: var(--text-lg);
-    line-height: var(--tw-leading, var(--text-lg--line-height));
   }
   .text-sm {
     font-size: var(--text-sm);
@@ -1513,6 +1414,9 @@
   }
   .text-base-content {
     color: var(--color-base-content);
+  }
+  .text-error {
+    color: var(--color-error);
   }
   .lowercase {
     text-transform: lowercase;
@@ -1564,24 +1468,6 @@
       }
     }
   }
-  .card-lg {
-    .card-body {
-      --card-p: 2rem;
-      --card-fs: 1rem;
-    }
-    .card-title {
-      --cardtitle-fs: 1.25rem;
-    }
-  }
-  .card-md {
-    .card-body {
-      --card-p: 1.5rem;
-      --card-fs: 0.875rem;
-    }
-    .card-title {
-      --cardtitle-fs: 1.125rem;
-    }
-  }
   .btn-neutral {
     --btn-color: var(--color-neutral);
     --btn-fg: var(--color-neutral-content);
@@ -1589,6 +1475,11 @@
   .btn-primary {
     --btn-color: var(--color-primary);
     --btn-fg: var(--color-primary-content);
+  }
+  .input-error {
+    &, &:focus, &:focus-within {
+      --input-color: var(--color-error);
+    }
   }
   .md\:w-auto {
     @media (width >= 48rem) {
@@ -1598,11 +1489,6 @@
   .lg\:flex-row-reverse {
     @media (width >= 64rem) {
       flex-direction: row-reverse;
-    }
-  }
-  .lg\:text-left {
-    @media (width >= 64rem) {
-      text-align: left;
     }
   }
 }

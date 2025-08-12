@@ -16,31 +16,47 @@
                             <input
                                 id="signup-email"
                                 type="email"
-                                class="validator input"
+                                class="validator input <%= errors.email && "input-error" %>"
                                 placeholder="Email"
-                                name="password"
+                                name="email"
+                                <% if (email) { %>
+                                    value="<%= email %>"
+                                <% } %>
                                 required
+                                <% if (errors.email) { %>
+                                    autofocus
+                                <% } %>
                             />
-                            <div class="validator-hint hidden">
-                                Enter valid email address
-                            </div>
+                            <p class="validator-hint text-error <%= errors.email ? "visible" :"hidden" %>"
+                            >
+                                <% if (errors.email) { %>
+                                    <%= errors.email.msg %>
+                                <% } else { %>
+                                    Enter a valid e-mail address    
+                                <% } %>
+                            </p>
                             <label class="label" for="signup-password"
                                 >Password</label
                             >
                             <input
                                 id="signup-password"
                                 type="password"
-                                class="validator input"
+                                class="validator input <%= errors.password && "input-error" %>"
                                 name="password"
                                 placeholder="Password"
                                 pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
                                 required
+                                <% if (errors.password) { %>
+                                    autofocus
+                                <% } %>
                             />
-                            <p class="validator-hint hidden">
-                                Must be more than 8 characters, including
-                                <br />At least one number <br />At least one
-                                lowercase letter <br />At least one uppercase
-                                letter
+                            <p class="validator-hint text-error <%= errors.password ? "visible" :"hidden" %>"
+                            >
+                                <% if (errors.password) { %>
+                                    <%- errors.password.msg %>
+                                <% } else { %>
+                                    Must be at least 8 characters long, including:<br>At least one number<br>At least one lowercase letter<br>At least one uppercase letter  
+                                <% } %>
                             </p>
                             <label class="label" for="signup-confirm-password"
                                 >Confirm password</label
@@ -48,15 +64,22 @@
                             <input
                                 id="signup-confirm-password"
                                 type="password"
-                                class="validator input"
+                                class="validator input <%= errors.confirmPassword && "input-error" %>"
                                 name="confirmPassword"
                                 placeholder="Password"
                                 required
+                                <% if (errors.confirmPassword) { %>
+                                    autofocus
+                                <% } %>
                             />
-                            <div class="validator-hint hidden">
-                                Must be the same password entered in the
-                                password field
-                            </div>
+                            <p class="validator-hint text-error <%= errors.confirmPassword ? "visible" :"hidden" %>"
+                            >
+                                <% if (errors.confirmPassword) { %>
+                                    <%= errors.confirmPassword.msg %>
+                                <% } else { %>
+                                    Passwords must be identical
+                                <% } %>
+                            </p>
                             <button class="btn mt-4 btn-neutral">
                                 Sign up
                             </button>
