@@ -50,7 +50,7 @@
                                         type="email"
                                         placeholder="Email"
                                         name="email"
-                                        <%= email && `value=${email}` %>
+                                        <%= locals.email && `value=${locals.email}` %>
                                         required
                                     />
                                 </label>
@@ -94,11 +94,11 @@
                                         name="password"
                                         required
                                     />
-                                    <div>
+                                    <!-- <div>
                                         <a class="link link-hover"
                                             >Forgot password?</a
                                         >
-                                    </div>
+                                    </div> -->
                                 </label>
                                 <div class="validator-hint">Required</div>
                                 <% if (errors.password) { %>
