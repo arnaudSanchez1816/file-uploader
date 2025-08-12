@@ -59,6 +59,7 @@
     "eslint-config-prettier": "^10.1.5",
     "globals": "^16.2.0",
     "prettier": "^3.5.3",
+    "prettier-plugin-ejs": "^1.0.3",
     "prettier-plugin-tailwindcss": "^0.6.13",
     "prisma": "^6.13.0",
     "rollup": "^4.46.2",
