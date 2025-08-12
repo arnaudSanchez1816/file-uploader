@@ -54,7 +54,7 @@
                                         required
                                     />
                                 </label>
-                                <div class="validator-hint">Required</div>
+                                <div class="validator-hint hidden">Required</div>
                                 <% if (errors.email) { %>
                                 <%- include('partials/components/serverError.ejs', {error : errors.email}) %>
                                 <% } %>
@@ -100,7 +100,7 @@
                                         >
                                     </div> -->
                                 </label>
-                                <div class="validator-hint">Required</div>
+                                <div class="validator-hint hidden">Required</div>
                                 <% if (errors.password) { %>
                                 <%- include('partials/components/serverError.ejs', {error : errors.password}) %>
                                 <% } %>
@@ -121,5 +121,6 @@
             </div>
         </div>
     </div>
+    <script type="module" src="/scripts/index.min.js"></script>
 </main>
 <%- include('partials/footer.ejs') %>

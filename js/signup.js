@@ -1,12 +1,4 @@
-function clearServerError(inputElement) {
-    const errorElement = document.querySelector(
-        `p[data-error='${inputElement.name}']`
-    )
-    if (errorElement) {
-        errorElement.remove()
-    }
-    inputElement.classList.remove("input-error")
-}
+const { clearServerError } = require("./helpers")
 
 const passwordConfirmation = (function () {
     const passwordConfirmationInput = document.querySelector(

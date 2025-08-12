@@ -5,10 +5,11 @@ import json from "@rollup/plugin-json"
 
 export default [
     {
-        input: ["js/signup.js", "js/header.js"],
+        input: ["js/index.js", "js/signup.js", "js/header.js"],
         output: {
             dir: "public",
             entryFileNames: "scripts/[name].min.js",
+            chunkFileNames: "scripts/chunks/[name]-[hash].js",
             format: "es",
             sourcemap: true,
         },
