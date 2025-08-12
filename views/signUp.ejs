@@ -1,85 +1,91 @@
 <%- include('partials/head.ejs') %>
 <main>
+    <%- include('partials/header.ejs', {user}) %>
     <div class="hero min-h-screen bg-base-200">
         <div class="hero-content w-full flex-col lg:flex-row-reverse">
             <div
-                class="card w-sm max-w-sm shrink-0 bg-base-100 shadow-2xl"
+                class="card w-full max-w-sm shrink-0 bg-base-100 shadow-2xl"
                 id="sign-up-form-card"
             >
                 <div class="card-body">
                     <h1 class="mx-auto text-2xl font-bold">Sign Up</h1>
                     <form action="/signup" method="post">
                         <fieldset class="fieldset">
-                            <label class="label" for="signup-email"
-                                >Email</label
-                            >
-                            <input
-                                id="signup-email"
-                                type="email"
-                                class="validator input <%= errors.email && "input-error" %>"
-                                placeholder="Email"
-                                name="email"
-                                <% if (email) { %>
-                                    value="<%= email %>"
-                                <% } %>
-                                required
-                                <% if (errors.email) { %>
-                                    autofocus
-                                <% } %>
-                            />
-                            <p class="validator-hint text-error <%= errors.email ? "visible" :"hidden" %>"
-                            >
-                                <% if (errors.email) { %>
-                                    <%= errors.email.msg %>
-                                <% } else { %>
+                            <div>
+                                <label class="label" for="signup-email">
+                                    Email
+                                </label>
+                                <input
+                                    id="signup-email"
+                                    type="email"
+                                    class="validator input <%= errors.email && "input-error" %>"
+                                    placeholder="Email"
+                                    name="email"
+                                    <% if (email) { %>
+                                        value="<%= email %>"
+                                    <% } %>
+                                    required
+                                    <% if (errors.email) { %>
+                                        autofocus
+                                    <% } %>
+                                />
+                                <p class="validator-hint text-error hidden"
+                                >
                                     Enter a valid e-mail address    
+                                </p>
+                                <% if (errors.email) { %>
+                                    <%- include('partials/components/serverError.ejs', { error : errors.email }) %>
                                 <% } %>
-                            </p>
-                            <label class="label" for="signup-password"
-                                >Password</label
-                            >
-                            <input
-                                id="signup-password"
-                                type="password"
-                                class="validator input <%= errors.password && "input-error" %>"
-                                name="password"
-                                placeholder="Password"
-                                pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
-                                required
-                                <% if (errors.password) { %>
-                                    autofocus
-                                <% } %>
-                            />
-                            <p class="validator-hint text-error <%= errors.password ? "visible" :"hidden" %>"
-                            >
-                                <% if (errors.password) { %>
-                                    <%- errors.password.msg %>
-                                <% } else { %>
+                            </div>
+                            <div>
+                                <label class="label" for="signup-password"
+                                >
+                                    Password
+                                </label>
+                                <input
+                                    id="signup-password"
+                                    type="password"
+                                    class="validator input <%= errors.password && "input-error" %>"
+                                    name="password"
+                                    placeholder="Password"
+                                    pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                                    required
+                                    <% if (errors.password) { %>
+                                        autofocus
+                                    <% } %>
+                                />
+                                <p class="validator-hint text-error hidden"
+                                >
                                     Must be at least 8 characters long, including:<br>At least one number<br>At least one lowercase letter<br>At least one uppercase letter  
+                                </p>
+                                <% if (errors.password) { %>
+                                    <%- include('partials/components/serverError.ejs', { error : errors.password }) %>
                                 <% } %>
-                            </p>
-                            <label class="label" for="signup-confirm-password"
-                                >Confirm password</label
-                            >
-                            <input
-                                id="signup-confirm-password"
-                                type="password"
-                                class="validator input <%= errors.confirmPassword && "input-error" %>"
-                                name="confirmPassword"
-                                placeholder="Password"
-                                required
-                                <% if (errors.confirmPassword) { %>
-                                    autofocus
-                                <% } %>
-                            />
-                            <p class="validator-hint text-error <%= errors.confirmPassword ? "visible" :"hidden" %>"
-                            >
-                                <% if (errors.confirmPassword) { %>
-                                    <%= errors.confirmPassword.msg %>
-                                <% } else { %>
+                            </div>
+                            <div>
+                                <label class="label" for="signup-confirm-password"
+                                >
+                                    Confirm password
+                                </label>
+                                <input
+                                    id="signup-confirm-password"
+                                    type="password"
+                                    class="validator input <%= errors.confirmPassword && "input-error" %>"
+                                    name="confirmPassword"
+                                    placeholder="Password"
+                                    required
+                                    <% if (errors.confirmPassword) { %>
+                                        autofocus
+                                    <% } %>
+                                />
+                                <p class="validator-hint text-error hidden"
+                                >
                                     Passwords must be identical
+                                </p>
+                                <% if (errors.confirmPassword) { %>
+                                    <%- include('partials/components/serverError.ejs', { error : errors.confirmPassword }) %>
                                 <% } %>
-                            </p>
+                            </div>
                             <button class="btn mt-4 btn-neutral">
                                 Sign up
                             </button>

@@ -627,9 +627,6 @@
       }
     }
   }
-  .visible {
-    visibility: visible;
-  }
   .input {
     cursor: text;
     border: var(--border) solid #0000;
@@ -1125,6 +1122,9 @@
       }
     }
   }
+  .mt-2 {
+    margin-top: calc(var(--spacing) * 2);
+  }
   .mt-3 {
     margin-top: calc(var(--spacing) * 3);
   }
@@ -1263,9 +1263,6 @@
   .h-\[1em\] {
     height: 1em;
   }
-  .h-\[2em\] {
-    height: 2em;
-  }
   .min-h-full {
     min-height: 100%;
   }
@@ -1289,9 +1286,6 @@
   }
   .w-full {
     width: 100%;
-  }
-  .w-sm {
-    width: var(--container-sm);
   }
   .max-w-sm {
     max-width: var(--container-sm);
