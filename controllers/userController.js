@@ -95,16 +95,6 @@ exports.postSignUp = [
 ]
 
 // Sign In
-exports.getSignIn = [
-    (req, res, next) => {
-        res.render("signIn", {
-            title: "Sign in",
-            email: req.query.email,
-            redirectTo: req.query[BODY_SIGN_IN_REDIRECT_TO],
-        })
-    },
-]
-
 exports.postSignIn = [
     (req, res, next) => {
         if (req.isAuthenticated()) {
@@ -139,7 +129,7 @@ exports.postSignIn = [
                     req.body[BODY_SIGN_IN_REDIRECT_TO]
                 )
             }
-            return res.redirect(`/sign-in?${queryParams.toString()}`)
+            return res.redirect(`/${queryParams.toString()}`)
         }
         next()
     },
@@ -155,7 +145,7 @@ exports.postSignIn = [
         // Redirect authenticate error
         const queryParams = new URLSearchParams()
         queryParams.append("email", req.body.email)
-        return res.redirect(`/signin?${queryParams.toString()}`)
+        return res.redirect(`/?${queryParams.toString()}`)
     },
 ]
 

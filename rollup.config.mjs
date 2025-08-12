@@ -5,9 +5,10 @@ import json from "@rollup/plugin-json"
 
 export default [
     {
-        input: "js/index.js",
+        input: ["js/signup.js"],
         output: {
-            file: "public/index.js",
+            dir: "public",
+            entryFileNames: "scripts/[name].min.js",
             format: "es",
             sourcemap: true,
         },
