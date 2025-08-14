@@ -8,7 +8,7 @@ exports.getHome = async (req, res, next) => {
         const { folder, breadcrumbs } = await homeService.getHomeData({
             userId: user.id,
         })
-        res.render("home", { folder, FileType, breadcrumbs })
+        res.render("folder", { folder, FileType, breadcrumbs })
     } catch (error) {
         throw createHttpError(500, error.message)
     }

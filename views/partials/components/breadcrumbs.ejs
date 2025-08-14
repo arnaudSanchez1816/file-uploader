@@ -1,13 +1,15 @@
-<div class="breadcrumbs text-sm">
+<div class="breadcrumbs">
     <ul>
         <% breadcrumbs.forEach(bc => { %>
-            <% if (bc.current) { %>
-                <li><%= bc.name %></li>
-            <% } else { %>
-                <li>
-                    <a href="<%= bc.link %>"><%= bc.name %></a>
-                </li>
-            <% } %>
+        <% if (bc.current) { %>
+        <li class="font-medium"><%= bc.name %></li>
+        <% } else { %>
+        <li>
+            <a class="font-medium link-accent" href="<%= bc.link %>"
+                ><%= bc.name %></a
+            >
+        </li>
+        <% } %>
         <% }) %>
     </ul>
 </div>

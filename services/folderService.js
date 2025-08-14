@@ -50,7 +50,7 @@ async function getFolderBreadcrumbs(folderId) {
     }
     breadCrumbs.unshift({
         name: "Home",
-        link: "/",
+        link: "/home",
         current: false,
     })
 

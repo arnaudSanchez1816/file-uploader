@@ -42,7 +42,7 @@ function getHomeBreadcrumbs() {
     const breadCrumbs = []
     breadCrumbs.unshift({
         name: "Home",
-        link: "/",
+        link: "/home",
         current: true,
     })
 

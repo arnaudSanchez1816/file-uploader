@@ -1,55 +1,34 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>File Uploader</title>
-    </head>
-    <body>
-        <h1><%= locals.folder.name %></h1>
-        <div>
-            <p>Welcome <%= locals.user.email %>.</p>
-            <a href="/signout">Sign out</a>
+<%- include('partials/head.ejs') %>
+<%- include('partials/header.ejs', { user }) %>
+<main class="grow">
+    <div class="drawer lg:drawer-open h-full">
+        <input id="my-drawer-2" type="checkbox" class="drawer-toggle" />
+        <div class="drawer-content flex flex-col p-4 gap-2">
+            <!-- Page content here -->
+            <label
+                for="my-drawer-2"
+                class="btn btn-primary drawer-button lg:hidden"
+            >
+                Open drawer
+            </label>
+            <%- include('partials/components/breadcrumbs.ejs', { breadcrumbs
+                }) %>
+            <%- include('partials/filesTable.ejs', {files :
+                folder.childFiles}) %>
         </div>
-        <div>
-            <div>
-                <form action="/files" method="post" enctype="multipart/form-data">
-                    <input type="hidden" name="parentId" value="<%= folder.id %>">
-                    <div>
-                        <label for="file">File to upload</label>
-                        <input type="file" name="file" id="file">
-                    </div>
-                    <button type="submit">Upload</button>
-                </form>
-                <form action="/folders" method="post">
-                    <input type="hidden" name="parentId" value="<%= folder.id %>">
-                    <div>
-                        <label for="folder-name">New folder : </label>
-                        <input type="text" name="folderName" id="folder-name" required>
-                    </div>
-                    <button type="submit">Create folder</button>
-                </form>
-            </div>
-            <div>
-                <p>Files</p>
-                <%- include('partials/components/breadcrumbs.ejs', { breadcrumbs }) %>
-                <% if (folder) { %>
-                    <div>
-                        <a href="<%= folder.parentId ? `/folders/${folder.parentId}` : "/home" %>">../</a>
-                    </div>
-                <% } %>
-                <% if (locals.folder.childFiles.length <= 0) { %>
-                    <p>No files yet !</p>
-                <% } else { %>
-                    <% locals.folder.childFiles.forEach(file => { %>
-                        <% if(file.type === FileType.FILE) {%>
-                            <%- include('./partials/components/file.ejs', { file }) %>
-                        <% } else { %>
-                            <%- include('./partials/components/folder.ejs', { folder:file }) %>
-                        <% } %>
-                    <% }) %>
-                <% } %>
-            </div>
+        <div class="drawer-side h-full">
+            <label
+                for="my-drawer-2"
+                aria-label="close sidebar"
+                class="drawer-overlay"
+            ></label>
+            <ul
+                class="menu bg-base-200 text-base-content min-h-full w-80 p-4 lg:border-r-2 border-base-content/20"
+            >
+                <!-- Sidebar content here -->
+                <%- include('./partials/sidebar.ejs') %>
+            </ul>
         </div>
-    </body>
-</html>
+    </div>
+</main>
+<%- include('partials/footer.ejs') %>
