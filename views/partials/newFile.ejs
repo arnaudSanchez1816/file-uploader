@@ -1,0 +1,31 @@
+<dialog id="new-file-dialog" class="modal">
+    <div class="modal-box">
+        <h3 class="text-lg font-bold mb-2">New file</h3>
+        <form
+            id="new-file-form"
+            action="/files"
+            method="post"
+            enctype="multipart/form-data"
+        >
+            <% if (folder && folder.id) { %>
+            <input type="hidden" name="parentId" value="<%= folder.id %>" />
+            <% } %>
+            <fieldset class="fieldset">
+                <legend class="fieldset-legend">Pick a file</legend>
+                <input type="file" class="file-input" name="file" />
+                <label class="label">Max size 2MB</label>
+            </fieldset>
+        </form>
+        <div class="modal-action">
+            <button type="submit" form="new-file-form" class="btn btn-primary">
+                Upload
+            </button>
+            <form method="dialog">
+                <button class="btn">Close</button>
+            </form>
+        </div>
+    </div>
+    <form method="dialog" class="modal-backdrop">
+        <button aria-hidden="true">Close</button>
+    </form>
+</dialog>

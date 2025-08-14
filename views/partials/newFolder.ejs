@@ -1,0 +1,39 @@
+<dialog id="new-folder-dialog" class="modal">
+    <div class="modal-box">
+        <h3 class="text-lg font-bold mb-2">New folder</h3>
+        <form id="new-folder-form" action="/folders" method="post">
+            <% if (folder && folder.id) { %>
+            <input type="hidden" name="parentId" value="<%= folder.id %>" />
+            <% } %>
+            <fieldset class="fieldset">
+                <div>
+                    <label for="folder-name" class="fieldset-legend block"
+                        >Name</label
+                    >
+                    <input
+                        type="text"
+                        name="folderName"
+                        id="folder-name"
+                        class="input"
+                        value="New folder"
+                    />
+                </div>
+            </fieldset>
+        </form>
+        <div class="modal-action">
+            <button
+                type="submit"
+                form="new-folder-form"
+                class="btn btn-primary"
+            >
+                Create
+            </button>
+            <form method="dialog">
+                <button class="btn">Close</button>
+            </form>
+        </div>
+    </div>
+    <form method="dialog" class="modal-backdrop">
+        <button aria-hidden="true">Close</button>
+    </form>
+</dialog>

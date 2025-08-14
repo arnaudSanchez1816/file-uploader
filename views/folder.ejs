@@ -26,9 +26,12 @@
                 class="menu bg-base-200 text-base-content min-h-full w-80 p-4 lg:border-r-2 border-base-content/20"
             >
                 <!-- Sidebar content here -->
-                <%- include('./partials/sidebar.ejs') %>
+                <%- include('./partials/sidebar.ejs', {folder : locals.folder}) %>
             </ul>
         </div>
     </div>
 </main>
+<%- include('partials/newFile.ejs', {folder : locals.folder}) %>
+<%- include('partials/newFolder.ejs', {folder : locals.folder}) %>
+<%- include('partials/deleteFolder.ejs', {folder : locals.folder}) %>
 <%- include('partials/footer.ejs') %>
