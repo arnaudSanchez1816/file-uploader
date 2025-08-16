@@ -23,9 +23,14 @@ exports.getFolderById = async (folderId, { includeChildren = false } = {}) => {
         },
         include: {
             childFiles: includeChildren && {
-                orderBy: {
-                    name: "asc",
-                },
+                orderBy: [
+                    {
+                        type: "asc",
+                    },
+                    {
+                        name: "asc",
+                    },
+                ],
             },
         },
     })

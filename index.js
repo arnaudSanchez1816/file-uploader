@@ -15,6 +15,7 @@ const prismaClient = require("./db/client")
 const passport = require("./middlewares/passport")
 const { isAuthenticated } = require("./middlewares/isAuthenticated")
 const fs = require("fs")
+const { filesize } = require("filesize")
 
 if (process.env["FILES_DATA_PATH"] === undefined) {
     throw new Error("Missing FILES_DATA_PATH env variable.")
@@ -66,6 +67,12 @@ app.use(passport.session())
 // Add user to locals
 app.use((req, res, next) => {
     res.locals.user = req.user
+    next()
+})
+
+// Add filesize function to locals
+app.use((req, res, next) => {
+    res.locals.filesize = filesize
     next()
 })
 

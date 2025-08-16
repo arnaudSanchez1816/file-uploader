@@ -2,6 +2,7 @@ const folderRepository = require("../repositories/folderRepository")
 const fs = require("fs/promises")
 const { FileType } = require("../generated/prisma/client")
 const { computeFilePath } = require("../utils/filesUtils")
+const { stringifyBigInt } = require("../utils/jsonUtils")
 
 exports.createFolder = async (userId, folderName, parentId = null) => {
     const createdFolder = await folderRepository.createFolder(
@@ -22,9 +23,18 @@ exports.getFolderData = async (folderId) => {
         breadcrumbs = await getFolderBreadcrumbs(folderId)
     }
 
+    const filesJson = stringifyBigInt(
+        folder.childFiles
+            .filter((f) => f.type === FileType.FILE)
+            .map((file) => {
+                return { ...file, createdAt: file.createdAt.toDateString() }
+            })
+    )
+
     return {
         folder,
         breadcrumbs,
+        filesJson,
     }
 }
 

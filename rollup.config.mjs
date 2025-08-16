@@ -5,7 +5,13 @@ import json from "@rollup/plugin-json"
 
 export default [
     {
-        input: ["js/index.js", "js/signup.js", "js/header.js", "js/sidebar.js"],
+        input: [
+            "js/index.js",
+            "js/folder.js",
+            "js/signup.js",
+            "js/header.js",
+            "js/sidebar.js",
+        ],
         output: {
             dir: "public",
             entryFileNames: "scripts/[name].min.js",

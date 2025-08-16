@@ -1,0 +1,2 @@
+function e(e){return e&&e.__esModule&&Object.prototype.hasOwnProperty.call(e,"default")?e.default:e}var r,t={};function a(){return r||(r=1,t.clearServerError=e=>{const r=document.querySelector(`p[data-error='${e.name}']`);r&&r.remove(),e.classList.remove("input-error")},t.parseBigInt=e=>JSON.parse(e,(e,r)=>isNaN(+r)||Number.isSafeInteger(+r)?r:BigInt(r))),t}export{e as g,a as r};
+//# sourceMappingURL=helpers-z5Zy_Q5w.js.map

@@ -20,7 +20,7 @@ exports.getFolder = [
         const userId = req.user.id
         const { folderId } = matchedData(req)
 
-        const { folder, breadcrumbs } =
+        const { folder, breadcrumbs, filesJson } =
             await folderService.getFolderData(folderId)
 
         if (!folder) {
@@ -29,7 +29,12 @@ exports.getFolder = [
         if (folder.ownerId !== userId) {
             throw new createHttpError.Unauthorized()
         }
-        res.render("folder", { folder, FileType, breadcrumbs })
+        res.render("folder", {
+            folder,
+            FileType,
+            breadcrumbs,
+            filesJson,
+        })
     },
 ]
 

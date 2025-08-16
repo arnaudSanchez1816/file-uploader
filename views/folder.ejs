@@ -14,7 +14,7 @@
             <%- include('partials/components/breadcrumbs.ejs', { breadcrumbs
                 }) %>
             <%- include('partials/filesTable.ejs', {files :
-                folder.childFiles}) %>
+                folder.childFiles, filesize}) %>
         </div>
         <div class="drawer-side h-full">
             <label
@@ -30,8 +30,13 @@
             </ul>
         </div>
     </div>
+    <script type="module" src="/scripts/folder.min.js"></script>
+    <script id="files-data" type="application/json">
+        <%- locals.filesJson || [] %>
+    </script>
 </main>
 <%- include('partials/newFile.ejs', {folder : locals.folder}) %>
 <%- include('partials/newFolder.ejs', {folder : locals.folder}) %>
 <%- include('partials/deleteFolder.ejs', {folder : locals.folder}) %>
+<%- include('partials/fileDetails.ejs') %>
 <%- include('partials/footer.ejs') %>

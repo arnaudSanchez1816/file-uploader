@@ -1,5 +1,6 @@
 const prisma = require("../db/client")
 const { FileType } = require("../generated/prisma/client")
+const { stringifyBigInt } = require("../utils/jsonUtils")
 
 exports.getHomeData = async ({ userId }) => {
     const userFiles = await prisma.file.findMany({
@@ -7,11 +8,24 @@ exports.getHomeData = async ({ userId }) => {
             ownerId: userId,
             parentId: null,
         },
-        orderBy: {
-            name: "asc",
-        },
+        orderBy: [
+            {
+                type: "desc",
+            },
+            {
+                name: "asc",
+            },
+        ],
     })
     const breadcrumbs = getHomeBreadcrumbs()
+
+    const filesJson = stringifyBigInt(
+        userFiles
+            .filter((f) => f.type === FileType.FILE)
+            .map((file) => {
+                return { ...file, createdAt: file.createdAt.toDateString() }
+            })
+    )
 
     return {
         folder: {
@@ -24,6 +38,7 @@ exports.getHomeData = async ({ userId }) => {
             childFiles: userFiles,
         },
         breadcrumbs,
+        filesJson,
     }
 }
 

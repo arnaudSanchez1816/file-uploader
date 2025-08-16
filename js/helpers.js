@@ -7,3 +7,12 @@ exports.clearServerError = (inputElement) => {
     }
     inputElement.classList.remove("input-error")
 }
+
+exports.parseBigInt = (object) => {
+    return JSON.parse(object, (key, value) => {
+        if (!isNaN(+value) && !Number.isSafeInteger(+value)) {
+            return BigInt(value)
+        }
+        return value
+    })
+}

@@ -5,10 +5,11 @@ const { FileType } = require("../generated/prisma/client")
 exports.getHome = async (req, res, next) => {
     const user = req.user
     try {
-        const { folder, breadcrumbs } = await homeService.getHomeData({
-            userId: user.id,
-        })
-        res.render("folder", { folder, FileType, breadcrumbs })
+        const { folder, breadcrumbs, filesJson } =
+            await homeService.getHomeData({
+                userId: user.id,
+            })
+        res.render("folder", { folder, FileType, breadcrumbs, filesJson })
     } catch (error) {
         throw createHttpError(500, error.message)
     }
