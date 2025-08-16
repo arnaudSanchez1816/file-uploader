@@ -87,6 +87,6 @@
         </li>
         <% } %>
     </ul>
-    <%- include('./components/fileTree.ejs') %>
+    <%- include('./components/fileTree.ejs', {sidebarTree, breadcrumbs}) %>
 </div>
 <script type="module" src="/scripts/sidebar.min.js" defer></script>

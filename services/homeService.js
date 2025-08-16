@@ -1,5 +1,6 @@
 const prisma = require("../db/client")
 const { FileType } = require("../generated/prisma/client")
+const { getAllFoldersTree } = require("../generated/prisma/sql")
 const { stringifyBigInt } = require("../utils/jsonUtils")
 
 exports.getHomeData = async ({ userId }) => {
@@ -18,6 +19,8 @@ exports.getHomeData = async ({ userId }) => {
         ],
     })
     const breadcrumbs = getHomeBreadcrumbs()
+    // all sidebar folders tree
+    const sidebarTree = await this.getSidebarFoldersTree(userId)
 
     const filesJson = stringifyBigInt(
         userFiles
@@ -39,18 +42,8 @@ exports.getHomeData = async ({ userId }) => {
         },
         breadcrumbs,
         filesJson,
+        sidebarTree,
     }
-}
-
-exports.getHomeBreadcrumbs = () => {
-    const breadCrumbs = []
-    breadCrumbs.unshift({
-        name: "Home",
-        link: "/",
-        current: true,
-    })
-
-    return breadCrumbs
 }
 
 function getHomeBreadcrumbs() {
@@ -59,7 +52,29 @@ function getHomeBreadcrumbs() {
         name: "Home",
         link: "/home",
         current: true,
+        id: -1,
     })
 
     return breadCrumbs
+}
+
+exports.getSidebarFoldersTree = async (userId) => {
+    const allFolders = await prisma.$queryRaw(getAllFoldersTree(userId))
+    return parseToSidebarFoldersTree(allFolders)
+}
+
+function parseToSidebarFoldersTree(allFolders) {
+    let map = {},
+        root = { id: -1, name: "Home", folders: [] }
+    map[-1] = root
+
+    for (let i = 0; i < allFolders.length; ++i) {
+        const node = allFolders[i]
+        map[node.id] = node
+        node.folders = []
+
+        const parent = map[node.parentId || -1]
+        parent.folders.push(node)
+    }
+    return root
 }

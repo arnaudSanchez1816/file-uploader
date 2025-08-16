@@ -14,7 +14,7 @@
             <%- include('partials/components/breadcrumbs.ejs', { breadcrumbs
                 }) %>
             <%- include('partials/filesTable.ejs', {files :
-                folder.childFiles, filesize}) %>
+                folder.childFiles}) %>
         </div>
         <div class="drawer-side h-full">
             <label
@@ -26,7 +26,7 @@
                 class="menu bg-base-200 text-base-content min-h-full w-80 p-4 lg:border-r-2 border-base-content/20"
             >
                 <!-- Sidebar content here -->
-                <%- include('./partials/sidebar.ejs', {folder : locals.folder}) %>
+                <%- include('./partials/sidebar.ejs', {folder : locals.folder, sidebarTree, breadcrumbs}) %>
             </ul>
         </div>
     </div>

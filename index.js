@@ -16,6 +16,7 @@ const passport = require("./middlewares/passport")
 const { isAuthenticated } = require("./middlewares/isAuthenticated")
 const fs = require("fs")
 const { filesize } = require("filesize")
+const { FileType } = require("./generated/prisma")
 
 if (process.env["FILES_DATA_PATH"] === undefined) {
     throw new Error("Missing FILES_DATA_PATH env variable.")
@@ -70,11 +71,9 @@ app.use((req, res, next) => {
     next()
 })
 
-// Add filesize function to locals
-app.use((req, res, next) => {
-    res.locals.filesize = filesize
-    next()
-})
+// Add filesize function to app locals
+app.locals.filesize = filesize
+app.locals.FileType = FileType
 
 // Fill errors locals with flash errors
 app.use((req, res, next) => {

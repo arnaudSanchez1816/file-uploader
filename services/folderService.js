@@ -3,6 +3,7 @@ const fs = require("fs/promises")
 const { FileType } = require("../generated/prisma/client")
 const { computeFilePath } = require("../utils/filesUtils")
 const { stringifyBigInt } = require("../utils/jsonUtils")
+const { getSidebarFoldersTree } = require("./homeService")
 
 exports.createFolder = async (userId, folderName, parentId = null) => {
     const createdFolder = await folderRepository.createFolder(
@@ -14,10 +15,11 @@ exports.createFolder = async (userId, folderName, parentId = null) => {
     return createdFolder
 }
 
-exports.getFolderData = async (folderId) => {
+exports.getFolderData = async (folderId, ownerId) => {
     const folder = await folderRepository.getFolderById(folderId, {
         includeChildren: true,
     })
+
     let breadcrumbs = []
     if (folder) {
         breadcrumbs = await getFolderBreadcrumbs(folderId)
@@ -31,10 +33,13 @@ exports.getFolderData = async (folderId) => {
             })
     )
 
+    const sidebarTree = await getSidebarFoldersTree(ownerId)
+
     return {
         folder,
         breadcrumbs,
         filesJson,
+        sidebarTree,
     }
 }
 
@@ -50,6 +55,7 @@ async function getFolderBreadcrumbs(folderId) {
                 name: name,
                 link: `/folders/${id}`,
                 current: level === 0,
+                id: id,
             })
 
             if (!treeNode.childFiles || treeNode.childFiles.length <= 0) {
@@ -62,6 +68,7 @@ async function getFolderBreadcrumbs(folderId) {
         name: "Home",
         link: "/home",
         current: false,
+        id: -1,
     })
 
     return breadCrumbs

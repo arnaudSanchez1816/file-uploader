@@ -6,7 +6,6 @@ const {
 } = require("express-validator")
 const folderService = require("../services/folderService")
 const createHttpError = require("http-errors")
-const { FileType } = require("../generated/prisma/client")
 
 exports.getFolder = [
     param("folderId")
@@ -20,8 +19,8 @@ exports.getFolder = [
         const userId = req.user.id
         const { folderId } = matchedData(req)
 
-        const { folder, breadcrumbs, filesJson } =
-            await folderService.getFolderData(folderId)
+        const { folder, breadcrumbs, filesJson, sidebarTree } =
+            await folderService.getFolderData(folderId, userId)
 
         if (!folder) {
             throw new createHttpError.NotFound()
@@ -31,9 +30,9 @@ exports.getFolder = [
         }
         res.render("folder", {
             folder,
-            FileType,
             breadcrumbs,
             filesJson,
+            sidebarTree,
         })
     },
 ]
