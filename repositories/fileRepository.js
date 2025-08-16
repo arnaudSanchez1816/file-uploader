@@ -12,7 +12,7 @@ const prisma = require("../db/client").$extends({
     },
 })
 
-exports.createFile = async ({ name, ownerId, parentId = null }) => {
+exports.createFile = async ({ name, ownerId, parentId = null, size }) => {
     return prisma.file.create({
         data: {
             name,
@@ -20,6 +20,7 @@ exports.createFile = async ({ name, ownerId, parentId = null }) => {
             createdAt: new Date(),
             type: FileType.FILE,
             parentId,
+            size: size,
         },
     })
 }

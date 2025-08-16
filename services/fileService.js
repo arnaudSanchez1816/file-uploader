@@ -12,6 +12,7 @@ exports.uploadFile = async ({ userId, file, parentId = null }) => {
         name: fileName,
         ownerId: userId,
         parentId,
+        size: file.size,
     })
     try {
         await fs.writeFile(createdFile.path, file.buffer)
