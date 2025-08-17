@@ -102,3 +102,7 @@ function deleteFolderTree(folderTree) {
         childFiles.forEach((child) => deleteFolderTree(child))
     }
 }
+
+exports.moveFolder = async (folderId, newParentId) => {
+    return folderRepository.moveFolder(folderId, newParentId)
+}

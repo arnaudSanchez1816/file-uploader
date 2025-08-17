@@ -7,6 +7,7 @@ router
     .route("/:folderId")
     .get(folderController.getFolder)
     .delete(folderController.deleteFolder)
+router.post("/:folderId/move", folderController.moveFolder)
 router.post("/", folderController.createFolder)
 
 module.exports = router

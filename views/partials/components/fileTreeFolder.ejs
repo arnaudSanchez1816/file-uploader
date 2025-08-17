@@ -1,10 +1,10 @@
-<% console.log(breadcrumbs);%>
 <details
 <% if (breadcrumbs.filter((bc) => bc.id === folder.id).length > 0) { %>
     open
 <% } %>
 >
-    <summary>
+    <summary class="relative"
+    >
         <% let folderLink = "/home" %>
         <% if (folder && folder.id >= 0 ) { %>
         <% folderLink = `/folders/${folder.id}` %>
@@ -28,6 +28,7 @@
             </svg>
             <%= folder.name %>
         </a>
+        <%- include('dropTarget.ejs', {id : folder.id}) %>
     </summary>
     <ul>
         <% folder.folders.forEach(folder => { %>

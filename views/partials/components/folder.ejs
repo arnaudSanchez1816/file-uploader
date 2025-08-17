@@ -2,7 +2,8 @@
     href="<%= `/folders/${folder.id}`%>"
     role="button"
     data-id="<%= folder.id %>"
-    class="folder btn btn-block btn-md btn-outline grid grid-cols-[3fr_minmax(70px,_1fr)_minmax(70px,_1fr)] text-left"
+    class="folder relative btn btn-block btn-md btn-outline grid grid-cols-[3fr_minmax(70px,_1fr)_minmax(70px,_1fr)] text-left"
+    draggable="true"
 >
     <div class="flex justify-start items-center gap-2">
         <svg
@@ -27,4 +28,5 @@
     </div>
     <div>--</div>
     <div><%= folder.createdAt.toDateString() %></div>
+    <%- include('dropTarget.ejs', {id : folder.id}) %>
 </a>

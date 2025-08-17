@@ -1,5 +1,5 @@
 exports.isAuthenticated =
-    ({ redirect = "/signin" } = {}) =>
+    ({ redirect = "/" } = {}) =>
     (req, res, next) => {
         if (!req.isAuthenticated()) {
             return res.redirect(redirect)

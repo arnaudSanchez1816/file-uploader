@@ -1,5 +1,6 @@
 const FileDetailsDialog = require("./fileDetailsDialog")
 const { parseBigInt } = require("./helpers")
+require("./dragAndDrop")
 
 const files = parseBigInt(document.querySelector("#files-data").textContent)
 const fileDetails = new FileDetailsDialog("#file-details-dialog")

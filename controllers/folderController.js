@@ -85,3 +85,54 @@ exports.deleteFolder = [
         )
     },
 ]
+
+exports.moveFolder = [
+    body("newParentId")
+        .default(null)
+        .if(body("newParentId").custom((value) => value !== null))
+        .isInt({ min: 1 })
+        .toInt(),
+    param("folderId").exists().isInt({ min: 1 }).toInt(),
+    async (req, res, next) => {
+        const errors = validationResult(req).throw()
+
+        const { folderId, newParentId } = matchedData(req)
+
+        const userId = req.user.id
+
+        const folder = await folderService.getFolderById(folderId)
+        if (!folder) {
+            throw new createHttpError.NotFound("Folder does not exists.")
+        }
+
+        if (folder.ownerId !== userId) {
+            throw new createHttpError.Unauthorized()
+        }
+
+        if (newParentId !== null) {
+            const parentFolder = await folderService.getFolderById(newParentId)
+            if (!parentFolder) {
+                throw new createHttpError.NotFound(
+                    "New parent folder does not exists."
+                )
+            }
+
+            if (parentFolder.ownerId !== userId) {
+                throw new createHttpError.Unauthorized()
+            }
+        }
+
+        const movedFolder = await folderService.moveFolder(
+            folderId,
+            newParentId
+        )
+        if (!movedFolder) {
+            return res.redirect("/")
+        }
+
+        if (newParentId === null) {
+            return res.redirect("/home")
+        }
+        return res.redirect(`/folders/${newParentId}`)
+    },
+]

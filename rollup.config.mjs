@@ -15,7 +15,7 @@ export default [
         output: {
             dir: "public",
             entryFileNames: "scripts/[name].min.js",
-            chunkFileNames: "scripts/chunks/[name]-[hash].js",
+            chunkFileNames: "scripts/chunks/[name].min.js",
             format: "es",
             sourcemap: true,
         },

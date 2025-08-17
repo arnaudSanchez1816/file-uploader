@@ -649,6 +649,9 @@
       isolation: isolate;
     }
   }
+  .pointer-events-none {
+    pointer-events: none;
+  }
   .validator-hint {
     visibility: hidden;
     margin-top: calc(0.25rem * 2);
@@ -966,6 +969,15 @@
     display: grid;
     width: 100%;
     grid-auto-columns: max-content auto;
+  }
+  .absolute {
+    position: absolute;
+  }
+  .relative {
+    position: relative;
+  }
+  .inset-0 {
+    inset: calc(var(--spacing) * 0);
   }
   .dropdown-end {
     --anchor-h: span-left;
@@ -1614,6 +1626,9 @@
       outline-offset: 2px;
     }
   }
+  .cursor-no-drop {
+    cursor: no-drop;
+  }
   .grid-cols-\[3fr_minmax\(70px\,_1fr\)_minmax\(70px\,_1fr\)\] {
     grid-template-columns: 3fr minmax(70px, 1fr) minmax(70px, 1fr);
   }
@@ -1668,6 +1683,30 @@
   .border-b-2 {
     border-bottom-style: var(--tw-border-style);
     border-bottom-width: 2px;
+  }
+  .btn-dash {
+    &:not( .btn-active, :hover, :active:focus, :focus-visible, :disabled, [disabled], .btn-disabled, :checked ) {
+      --btn-shadow: "";
+      border-style: dashed;
+      --btn-bg: #0000;
+      --btn-fg: var(--btn-color);
+      --btn-border: var(--btn-color);
+      --btn-noise: none;
+    }
+    @media (hover: none) {
+      &:hover:not( .btn-active, :active, :focus-visible, :disabled, [disabled], .btn-disabled, :checked ) {
+        --btn-shadow: "";
+        border-style: dashed;
+        --btn-bg: #0000;
+        --btn-fg: var(--btn-color);
+        --btn-border: var(--btn-color);
+        --btn-noise: none;
+      }
+    }
+  }
+  .border-dashed {
+    --tw-border-style: dashed;
+    border-style: dashed;
   }
   .alert-warning {
     border-color: var(--color-warning);
@@ -1843,6 +1882,10 @@
     --btn-color: var(--color-primary);
     --btn-fg: var(--color-primary-content);
   }
+  .outline-dashed {
+    --tw-outline-style: dashed;
+    outline-style: dashed;
+  }
   .input-error {
     &, &:focus, &:focus-within {
       --input-color: var(--color-error);
@@ -1900,6 +1943,11 @@
     @media (width >= 64rem) {
       border-right-style: var(--tw-border-style);
       border-right-width: 2px;
+    }
+  }
+  .\[\&\.folder\]\:cursor-grabbing {
+    &.folder {
+      cursor: grabbing;
     }
   }
 }

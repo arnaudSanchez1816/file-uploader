@@ -52,3 +52,16 @@ exports.deleteFolder = async (folderId) => {
 
     return deletedFolder
 }
+
+exports.moveFolder = async (folderId, newParentId) => {
+    const folder = await prisma.file.update({
+        where: {
+            id: folderId,
+        },
+        data: {
+            parentId: newParentId,
+        },
+    })
+
+    return folder
+}

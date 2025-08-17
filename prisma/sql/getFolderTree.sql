@@ -34,4 +34,4 @@ SELECT
 FROM results ft
 LEFT JOIN file_uploader.files p ON ft.parent_id = p.id
 LEFT JOIN file_uploader.users u ON ft.owner_id = u.id
-ORDER BY ft.level;
+ORDER BY ft.level, ft.name ASC;
