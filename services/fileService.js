@@ -1,4 +1,5 @@
 const fileRepository = require("../repositories/fileRepository")
+const folderService = require("../services/folderService")
 const fs = require("fs/promises")
 const sanitizeFilename = require("sanitize-filename")
 
@@ -48,4 +49,8 @@ exports.isFileOwner = async (fileId, userId) => {
     } catch {
         return false
     }
+}
+
+exports.moveIntoFolder = async (fileId, newParentId) => {
+    return folderService.moveIntoFolder(fileId, newParentId)
 }

@@ -103,6 +103,6 @@ function deleteFolderTree(folderTree) {
     }
 }
 
-exports.moveFolder = async (folderId, newParentId) => {
-    return folderRepository.moveFolder(folderId, newParentId)
+exports.moveIntoFolder = async (folderId, newParentId) => {
+    return folderRepository.moveIntoFolder(folderId, newParentId)
 }

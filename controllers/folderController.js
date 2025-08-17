@@ -122,7 +122,7 @@ exports.moveFolder = [
             }
         }
 
-        const movedFolder = await folderService.moveFolder(
+        const movedFolder = await folderService.moveIntoFolder(
             folderId,
             newParentId
         )

@@ -3,21 +3,25 @@
 const folderDragImg = new Image()
 folderDragImg.src = "/img/mdi--folder-move-outline.png"
 
-const draggableFolders = [
-    ...document.querySelectorAll(".folder[draggable=true]"),
+const dragTargets = [
+    ...document.querySelectorAll(".drag-target[draggable=true]"),
 ]
 
-const dragTargets = document.querySelectorAll(".drop-target")
+const dropTargets = document.querySelectorAll(".drop-target")
 
 function toggleDragTargets(enabled) {
-    for (const target of dragTargets) {
+    for (const target of dropTargets) {
         target.classList.toggle("hidden", !enabled)
     }
 }
 
-draggableFolders.forEach((folder) => {
+dragTargets.forEach((folder) => {
     folder.addEventListener("dragstart", (ev) => {
         ev.dataTransfer.setData("text/plain", ev.target.dataset.id)
+        ev.dataTransfer.setData(
+            "application/action-type",
+            ev.target.classList.contains("file") ? "files" : "folders"
+        )
         ev.dataTransfer.effectAllowed = "move"
         ev.dataTransfer.dropEffect = "move"
         ev.dataTransfer.setDragImage(folderDragImg, 28, 22)
@@ -29,7 +33,7 @@ draggableFolders.forEach((folder) => {
     })
 })
 
-for (const target of dragTargets) {
+for (const target of dropTargets) {
     target.addEventListener("dragover", (ev) => {
         console.log(ev.dataTransfer.dropEffect)
         ev.preventDefault()
@@ -54,12 +58,12 @@ for (const target of dragTargets) {
 
     target.addEventListener("drop", (ev) => {
         ev.preventDefault()
-        // Get the id of the target and add the moved element to the target's DOM
+
         const data = ev.dataTransfer.getData("text/plain")
+        const actionType = ev.dataTransfer.getData("application/action-type")
         target.classList.remove("outline-dashed")
-        //ev.target.appendChild(document.getElementById(data))
         const form = document.createElement("form")
-        form.action = `/folders/${data}/move`
+        form.action = `/${actionType}/${data}/move`
         form.method = "POST"
         const newParentInput = document.createElement("input")
         newParentInput.type = "hidden"
