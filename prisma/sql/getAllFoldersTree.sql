@@ -7,7 +7,8 @@ WITH RECURSIVE homeFolders AS (
     UNION ALL
     (SELECT this.id, this.name, this.created_at, this.type, this.owner_id, this.parent_id, previous.level + 1
     FROM file_uploader.files this
-    INNER JOIN goDown previous ON this.parent_id = previous.id)
+    INNER JOIN goDown previous ON this.parent_id = previous.id
+    WHERE this.type = 'FOLDER')
 )
 
 SELECT 
