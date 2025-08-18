@@ -1,6 +1,7 @@
 const multer = require("multer")
 const fileService = require("../services/fileService")
 const folderService = require("../services/folderService")
+const storageService = require("../services/storage/storageService")
 const {
     param,
     matchedData,
@@ -60,6 +61,9 @@ exports.uploadFile = [
                 req.flash("error", { msg: "Unsupported file type." })
                 return res.redirect(parentId ? `/folders/${parentId}` : "/home")
             }
+            // Replace multer mimetype with file-type one, it seems it is more reliable
+            // Probably unnecessary since we only allow image/* files
+            file.mimetype = fileType.mime
 
             const createdFile = await fileService.uploadFile({
                 userId,
@@ -118,7 +122,17 @@ exports.downloadFile = [
                 throw new createHttpError.Unauthorized()
             }
 
-            res.download(file.path, file.name)
+            const downloadUrl = await storageService.getDownloadUrl(
+                file.path,
+                file.name
+            )
+
+            if (storageService.strategyName === "local") {
+                // In local strategy, the download url is just the absolute path to the file
+                return res.download(downloadUrl, file.name)
+            }
+
+            res.redirect(downloadUrl)
         } catch (error) {
             next(error)
         }

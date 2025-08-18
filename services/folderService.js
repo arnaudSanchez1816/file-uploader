@@ -1,10 +1,10 @@
 const folderRepository = require("../repositories/folderRepository")
-const fs = require("fs/promises")
+const storageService = require("./storage/storageService")
 const { FileType } = require("../generated/prisma/client")
-const { computeFilePath } = require("../utils/filesUtils")
 const { stringifyBigInt } = require("../utils/jsonUtils")
 const { getSidebarFoldersTree } = require("./homeService")
 const createHttpError = require("http-errors")
+const { computeFilePath } = require("../utils/filesUtils")
 
 exports.createFolder = async (userId, folderName, parentId = null) => {
     const createdFolder = await folderRepository.createFolder(
@@ -92,19 +92,22 @@ exports.deleteFolder = async (folderId) => {
     const deletedFolderTree = await folderRepository.getFolderTree(folderId)
     const deletedFolder = await folderRepository.deleteFolder(folderId)
 
-    deleteFolderTree(deletedFolderTree)
+    await deleteFolderTree(deletedFolderTree)
 
     return deletedFolder
 }
 
-function deleteFolderTree(folderTree) {
+async function deleteFolderTree(folderTree) {
     if (!folderTree) {
         return
     }
 
     const { type, id, childFiles, level } = folderTree
     if (level > 0 && type === FileType.FILE) {
-        fs.unlink(computeFilePath(id))
+        // Prisma client extension for file path doesn't work when results come from a custom SQL query ?
+        // We compute the file path manually instead
+        const filePath = computeFilePath(id)
+        await storageService.deleteFile(filePath)
     }
 
     if (childFiles) {

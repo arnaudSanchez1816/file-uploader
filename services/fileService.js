@@ -1,7 +1,7 @@
 const fileRepository = require("../repositories/fileRepository")
 const folderService = require("../services/folderService")
-const fs = require("fs/promises")
 const sanitizeFilename = require("sanitize-filename")
+const storage = require("./storage/storageService")
 
 exports.uploadFile = async ({ userId, file, parentId = null }) => {
     if (!file) {
@@ -16,7 +16,7 @@ exports.uploadFile = async ({ userId, file, parentId = null }) => {
         size: file.size,
     })
     try {
-        await fs.writeFile(createdFile.path, file.buffer)
+        await storage.writeFile(createdFile.path, file.buffer, file.mimetype)
         return createdFile
     } catch (error) {
         await fileRepository.deleteFile({
@@ -32,7 +32,7 @@ exports.deleteFile = async (userId, fileId) => {
     }
 
     const deletedFile = await fileRepository.deleteFile({ fileId })
-    await fs.unlink(deletedFile.path)
+    await storage.deleteFile(deletedFile.path)
 }
 
 exports.getFileById = async (fileId, ownerId = null) => {
