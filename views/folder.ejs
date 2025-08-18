@@ -9,7 +9,7 @@
                 for="my-drawer-2"
                 class="btn btn-primary drawer-button lg:hidden"
             >
-                Open drawer
+                Controls
             </label>
             <%- include('partials/components/breadcrumbs.ejs', { breadcrumbs
                 }) %>
@@ -23,7 +23,7 @@
                 class="drawer-overlay"
             ></label>
             <ul
-                class="menu bg-base-200 text-base-content min-h-full w-80 p-4 lg:border-r-2 border-base-content/20"
+                class="menu bg-base-200 text-base-content min-h-full w-60 md:w-80 p-4 lg:border-r-2 border-base-content/20"
             >
                 <!-- Sidebar content here -->
                 <%- include('./partials/sidebar.ejs', {folder : locals.folder, sidebarTree, breadcrumbs}) %>
