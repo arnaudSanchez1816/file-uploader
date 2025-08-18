@@ -10,7 +10,7 @@
                 placeholder="Search"
                 class="input-bordered input w-24 md:w-auto"
             />
-            <p class="self-center"><%= locals.user.email %></p>
+            <p class="self-center hidden md:block"><%= locals.user.email %></p>
             <div class="dropdown dropdown-end">
                 <button class="btn btn-square btn-ghost" tabindex="0">
                     <svg
@@ -31,6 +31,9 @@
                     tabindex="0"
                     class="dropdown-content menu z-1 mt-3 w-52 menu-sm rounded-box bg-base-100 p-2 shadow"
                 >
+                    <li class="menu-title md:hidden">
+                        <%= locals.user.email %>
+                    </li>
                     <li><a href="/signout">Logout</a></li>
                 </ul>
             </div>
