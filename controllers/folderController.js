@@ -22,12 +22,6 @@ exports.getFolder = [
         const { folder, breadcrumbs, filesJson, sidebarTree } =
             await folderService.getFolderData(folderId, userId)
 
-        if (!folder) {
-            throw new createHttpError.NotFound()
-        }
-        if (folder.ownerId !== userId) {
-            throw new createHttpError.Unauthorized()
-        }
         res.render("folder", {
             folder,
             breadcrumbs,

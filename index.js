@@ -79,6 +79,8 @@ app.locals.FileType = FileType
 app.use((req, res, next) => {
     // Add passport flash errors to locals
     res.locals.errors = req.flash("error")
+    console.log(res.locals.errors)
+
     next()
 })
 

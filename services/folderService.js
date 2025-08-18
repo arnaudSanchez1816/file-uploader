@@ -4,6 +4,7 @@ const { FileType } = require("../generated/prisma/client")
 const { computeFilePath } = require("../utils/filesUtils")
 const { stringifyBigInt } = require("../utils/jsonUtils")
 const { getSidebarFoldersTree } = require("./homeService")
+const createHttpError = require("http-errors")
 
 exports.createFolder = async (userId, folderName, parentId = null) => {
     const createdFolder = await folderRepository.createFolder(
@@ -19,6 +20,14 @@ exports.getFolderData = async (folderId, ownerId) => {
     const folder = await folderRepository.getFolderById(folderId, {
         includeChildren: true,
     })
+
+    if (!folder) {
+        throw new createHttpError.NotFound("Folder not found")
+    }
+
+    if (folder.ownerId !== ownerId) {
+        throw new createHttpError.Unauthorized("Forbidden")
+    }
 
     let breadcrumbs = []
     if (folder) {

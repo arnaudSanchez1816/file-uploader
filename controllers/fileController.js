@@ -9,8 +9,17 @@ const {
 } = require("express-validator")
 const createHttpError = require("http-errors")
 const { FileType } = require("../generated/prisma")
+const { fromBuffer } = require("file-type")
 
 const MAX_FILE_SIZE = 5242880 // 5 MB
+const ALLOWED_FILES_MIME_TYPES = [
+    "image/png",
+    "image/jpeg",
+    "image/webp",
+    "image/gif",
+    "image/avif",
+    "image/apng",
+]
 const upload = multer({
     storage: multer.memoryStorage(),
     limits: { files: 1, fileSize: MAX_FILE_SIZE },
@@ -32,11 +41,25 @@ exports.uploadFile = [
         .toInt(),
     async (req, res, next) => {
         try {
-            const errors = validationResult(req).throw()
+            const errors = validationResult(req)
 
             const userId = req.user.id
             const { parentId } = matchedData(req)
             const { file } = req
+
+            if (!errors.isEmpty()) {
+                req.flash("error", { msg: "Something wrong happened." })
+                return res.redirect(parentId ? `/folders/${parentId}` : "/home")
+            }
+
+            const fileType = await fromBuffer(file.buffer)
+            if (
+                !fileType ||
+                !ALLOWED_FILES_MIME_TYPES.includes(fileType.mime)
+            ) {
+                req.flash("error", { msg: "Unsupported file type." })
+                return res.redirect(parentId ? `/folders/${parentId}` : "/home")
+            }
 
             const createdFile = await fileService.uploadFile({
                 userId,
@@ -44,7 +67,7 @@ exports.uploadFile = [
                 parentId,
             })
 
-            res.redirect(parentId ? `/folders/${parentId}` : "/")
+            res.redirect(parentId ? `/folders/${parentId}` : "/home")
         } catch (error) {
             next(error)
         }
@@ -55,18 +78,26 @@ exports.deleteFile = [
     fileIdValidation(),
     async (req, res, next) => {
         try {
-            validationResult(req).throw()
+            const errors = validationResult(req)
 
             const { fileId } = matchedData(req)
             const userId = req.user.id
 
-            const file = await fileService.getFileById(fileId, userId)
+            if (!errors.isEmpty()) {
+                req.flash("error", { msg: "Something wrong happened." })
+                return res.redirect("/home")
+            }
+
+            const file = await fileService.getFileById(fileId)
             if (!file) {
-                throw new createHttpError.NotFound("File not found.")
+                throw new createHttpError.NotFound()
+            }
+            if (file.ownerId !== userId) {
+                throw new createHttpError.Unauthorized()
             }
 
             await fileService.deleteFile(userId, fileId)
-            res.redirect("/")
+            res.redirect("/home")
         } catch (error) {
             next(error)
         }
@@ -79,7 +110,14 @@ exports.downloadFile = [
         try {
             const { fileId } = matchedData(req)
             const userId = req.user.id
-            const file = await fileService.getFileById(fileId, userId)
+            const file = await fileService.getFileById(fileId)
+            if (!file) {
+                throw new createHttpError.NotFound()
+            }
+            if (file.ownerId !== userId) {
+                throw new createHttpError.Unauthorized()
+            }
+
             res.download(file.path, file.name)
         } catch (error) {
             next(error)

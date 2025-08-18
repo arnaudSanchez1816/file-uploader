@@ -1,6 +1,7 @@
 const FileDetailsDialog = require("./fileDetailsDialog")
 const { parseBigInt } = require("./helpers")
 require("./dragAndDrop")
+const ToastContainer = require("./toastContainer")
 
 const files = parseBigInt(document.querySelector("#files-data").textContent)
 const fileDetails = new FileDetailsDialog("#file-details-dialog")
@@ -17,3 +18,6 @@ filesButtons.forEach((btn) => {
         fileDetails.showFile(file)
     })
 })
+
+const toasts = new ToastContainer(".toast")
+toasts.hide(5000)
