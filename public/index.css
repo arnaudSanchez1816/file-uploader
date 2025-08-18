@@ -649,9 +649,6 @@
       isolation: isolate;
     }
   }
-  .pointer-events-none {
-    pointer-events: none;
-  }
   .validator-hint {
     visibility: hidden;
     margin-top: calc(0.25rem * 2);
@@ -1217,9 +1214,6 @@
   .col-span-2 {
     grid-column: span 2 / span 2;
   }
-  .col-span-full {
-    grid-column: 1 / -1;
-  }
   .hero {
     display: grid;
     width: 100%;
@@ -1626,9 +1620,6 @@
       outline-offset: 2px;
     }
   }
-  .cursor-no-drop {
-    cursor: no-drop;
-  }
   .grid-cols-\[3fr_minmax\(70px\,_1fr\)_minmax\(70px\,_1fr\)\] {
     grid-template-columns: 3fr minmax(70px, 1fr) minmax(70px, 1fr);
   }
@@ -1646,9 +1637,6 @@
   }
   .gap-2 {
     gap: calc(var(--spacing) * 2);
-  }
-  .gap-4 {
-    gap: calc(var(--spacing) * 4);
   }
   .self-center {
     align-self: center;
@@ -1683,33 +1671,25 @@
   .rounded-box {
     border-radius: var(--radius-box);
   }
+  .border-1 {
+    border-style: var(--tw-border-style);
+    border-width: 1px;
+  }
+  .border-2 {
+    border-style: var(--tw-border-style);
+    border-width: 2px;
+  }
   .border-b-2 {
     border-bottom-style: var(--tw-border-style);
     border-bottom-width: 2px;
   }
-  .btn-dash {
-    &:not( .btn-active, :hover, :active:focus, :focus-visible, :disabled, [disabled], .btn-disabled, :checked ) {
-      --btn-shadow: "";
-      border-style: dashed;
-      --btn-bg: #0000;
-      --btn-fg: var(--btn-color);
-      --btn-border: var(--btn-color);
-      --btn-noise: none;
-    }
-    @media (hover: none) {
-      &:hover:not( .btn-active, :active, :focus-visible, :disabled, [disabled], .btn-disabled, :checked ) {
-        --btn-shadow: "";
-        border-style: dashed;
-        --btn-bg: #0000;
-        --btn-fg: var(--btn-color);
-        --btn-border: var(--btn-color);
-        --btn-noise: none;
-      }
-    }
-  }
   .border-dashed {
     --tw-border-style: dashed;
     border-style: dashed;
+  }
+  .border-hidden {
+    --tw-border-style: hidden;
+    border-style: hidden;
   }
   .alert-warning {
     border-color: var(--color-warning);
@@ -1829,6 +1809,26 @@
     --tw-shadow: 0 25px 50px -12px var(--tw-shadow-color, rgb(0 0 0 / 0.25));
     box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
   }
+  .outline-hidden {
+    --tw-outline-style: none;
+    outline-style: none;
+    @media (forced-colors: active) {
+      outline: 2px solid transparent;
+      outline-offset: 2px;
+    }
+  }
+  .outline-1 {
+    outline-style: var(--tw-outline-style);
+    outline-width: 1px;
+  }
+  .outline-2 {
+    outline-style: var(--tw-outline-style);
+    outline-width: 2px;
+  }
+  .outline-4 {
+    outline-style: var(--tw-outline-style);
+    outline-width: 4px;
+  }
   .btn-ghost {
     &:not(.btn-active, :hover, :active:focus, :focus-visible) {
       --btn-shadow: "";
@@ -1889,6 +1889,10 @@
     --tw-outline-style: dashed;
     outline-style: dashed;
   }
+  .outline-dotted {
+    --tw-outline-style: dotted;
+    outline-style: dotted;
+  }
   .input-error {
     &, &:focus, &:focus-within {
       --input-color: var(--color-error);
@@ -1946,11 +1950,6 @@
     @media (width >= 64rem) {
       border-right-style: var(--tw-border-style);
       border-right-width: 2px;
-    }
-  }
-  .\[\&\.folder\]\:cursor-grabbing {
-    &.folder {
-      cursor: grabbing;
     }
   }
 }
@@ -2248,6 +2247,11 @@
   inherits: false;
   initial-value: 0 0 #0000;
 }
+@property --tw-outline-style {
+  syntax: "*";
+  inherits: false;
+  initial-value: solid;
+}
 @layer properties {
   @supports ((-webkit-hyphens: none) and (not (margin-trim: inline))) or ((-moz-orient: inline) and (not (color:rgb(from red r g b)))) {
     *, ::before, ::after, ::backdrop {
@@ -2267,6 +2271,7 @@
       --tw-ring-offset-width: 0px;
       --tw-ring-offset-color: #fff;
       --tw-ring-offset-shadow: 0 0 #0000;
+      --tw-outline-style: solid;
     }
   }
 }

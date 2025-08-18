@@ -15,6 +15,11 @@ function toggleDragTargets(enabled) {
     }
 }
 
+function toggleDropTargetOutline(target, enabled) {
+    target.classList.toggle("outline-dotted", enabled)
+    target.classList.toggle("outline-hidden", !enabled)
+}
+
 dragTargets.forEach((folder) => {
     folder.addEventListener("dragstart", (ev) => {
         ev.dataTransfer.setData("text/plain", ev.target.dataset.id)
@@ -35,7 +40,6 @@ dragTargets.forEach((folder) => {
 
 for (const target of dropTargets) {
     target.addEventListener("dragover", (ev) => {
-        console.log(ev.dataTransfer.dropEffect)
         ev.preventDefault()
         const targetId = ev.dataTransfer.getData("text/plain")
         const dropId = ev.target.dataset.id
@@ -47,21 +51,23 @@ for (const target of dropTargets) {
         const dropId = ev.target.dataset.id
         ev.dataTransfer.dropEffect = targetId !== dropId ? "move" : "none"
 
-        if (ev.dataTransfer.dropEffect === "move") {
-            target.classList.add("outline-dashed")
-        }
+        toggleDropTargetOutline(
+            ev.target,
+            ev.dataTransfer.dropEffect === "move"
+        )
     })
     target.addEventListener("dragleave", (ev) => {
         ev.preventDefault()
-        target.classList.remove("outline-dashed")
+        toggleDropTargetOutline(ev.target, false)
     })
 
     target.addEventListener("drop", (ev) => {
         ev.preventDefault()
 
+        toggleDropTargetOutline(ev.target, false)
+        // Setup move form
         const data = ev.dataTransfer.getData("text/plain")
         const actionType = ev.dataTransfer.getData("application/action-type")
-        target.classList.remove("outline-dashed")
         const form = document.createElement("form")
         form.action = `/${actionType}/${data}/move`
         form.method = "POST"
