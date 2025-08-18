@@ -10,9 +10,10 @@ const {
 const createHttpError = require("http-errors")
 const { FileType } = require("../generated/prisma")
 
+const MAX_FILE_SIZE = 5242880 // 5 MB
 const upload = multer({
     storage: multer.memoryStorage(),
-    limits: { files: 1 },
+    limits: { files: 1, fileSize: MAX_FILE_SIZE },
 })
 
 const fileIdValidation = () =>

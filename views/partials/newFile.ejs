@@ -12,8 +12,14 @@
             <% } %>
             <fieldset class="fieldset">
                 <legend class="fieldset-legend">Pick a file</legend>
-                <input type="file" class="file-input" name="file" />
-                <label class="label">Max size 2MB</label>
+                <input
+                    type="file"
+                    class="file-input validator"
+                    name="file"
+                    required
+                />
+                <label class="label">Max size 5MB</label>
+                <div class="validator-hint"></div>
             </fieldset>
         </form>
         <div class="modal-action">

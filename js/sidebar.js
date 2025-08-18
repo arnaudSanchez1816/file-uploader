@@ -1,9 +1,11 @@
-const newFileDialog = document.querySelector("#new-file-dialog")
+const NewFileDialog = require("./newFileDialog")
+
+const newFileDialog = new NewFileDialog("#new-file-dialog")
 const newFileBtns = [...document.querySelectorAll(".open-new-file")]
 
 newFileBtns.forEach((btn) => {
     btn.addEventListener("click", () => {
-        newFileDialog.showModal()
+        newFileDialog.show()
     })
 })
 
