@@ -3,14 +3,16 @@
     role="button"
     data-id="<%= folder.id %>"
     class="folder drag-target relative btn btn-block btn-md btn-outline grid grid-cols-[3fr_minmax(70px,_1fr)_minmax(70px,_1fr)] text-left"
-    draggable="true"
+    <% if (!locals.sharedFolder) { %>
+        draggable="true"
+    <% } %>
 >
-    <div class="flex justify-start items-center gap-2">
+    <div class="flex justify-start items-center gap-2 w-full">
         <svg
             width="100%"
             height="100%"
             viewBox="0 0 24 24"
-            class="h-5 w-5"
+            class="h-5 w-5 shrink-0"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
         >
@@ -22,7 +24,7 @@
                 stroke-linejoin="round"
             />
         </svg>
-        <span>
+        <span class="text-ellipsis overflow-hidden text-nowrap">
             <%= folder.name %>
         </span>
     </div>

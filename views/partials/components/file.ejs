@@ -1,16 +1,18 @@
 <button
     type="button"
     data-id="<%= file.id %>"
-    class="file drag-target btn btn-block btn-md btn-outline grid grid-cols-[3fr_minmax(70px,_1fr)_minmax(70px,_1fr)] text-left"
-    draggable="true"
+    class="file drag-target btn btn-block btn-md btn-outline grid grid-cols-[minmax(0,3fr)_minmax(70px,_1fr)_minmax(70px,_1fr)] text-left"
+    <% if (!locals.sharedFolder) { %>
+        draggable="true"
+    <% } %>
 >
-    <div class="flex justify-start items-center gap-2">
+    <div class="flex justify-start items-center gap-2 w-full">
         <svg
             width="100%"
             height="100%"
             viewBox="0 0 24 24"
             fill="none"
-            class="h-5 w-5"
+            class="h-5 w-5 shrink-0"
             xmlns="http://www.w3.org/2000/svg"
         >
             <path
@@ -21,7 +23,7 @@
                 stroke-linejoin="round"
             />
         </svg>
-        <span>
+        <span class="text-ellipsis overflow-hidden text-nowrap">
             <%= file.name %>
         </span>
     </div>

@@ -27,6 +27,8 @@
     --font-weight-medium: 500;
     --font-weight-bold: 700;
     --radius-lg: 0.5rem;
+    --default-transition-duration: 150ms;
+    --default-transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
     --default-font-family: var(--font-sans);
     --default-mono-font-family: var(--font-mono);
   }
@@ -1446,6 +1448,9 @@
   .mt-4 {
     margin-top: calc(var(--spacing) * 4);
   }
+  .mt-auto {
+    margin-top: auto;
+  }
   .breadcrumbs {
     max-width: 100%;
     overflow-x: auto;
@@ -1668,6 +1673,12 @@
   .h-6 {
     height: calc(var(--spacing) * 6);
   }
+  .h-8 {
+    height: calc(var(--spacing) * 8);
+  }
+  .h-10 {
+    height: calc(var(--spacing) * 10);
+  }
   .h-\[1em\] {
     height: 1em;
   }
@@ -1694,6 +1705,12 @@
   }
   .w-6 {
     width: calc(var(--spacing) * 6);
+  }
+  .w-8 {
+    width: calc(var(--spacing) * 8);
+  }
+  .w-10 {
+    width: calc(var(--spacing) * 10);
   }
   .w-24 {
     width: calc(var(--spacing) * 24);
@@ -1752,6 +1769,21 @@
   .grid-cols-\[3fr_minmax\(70px\,_1fr\)_minmax\(70px\,_1fr\)\] {
     grid-template-columns: 3fr minmax(70px, 1fr) minmax(70px, 1fr);
   }
+  .grid-cols-\[content_minmax\(70px\,_1fr\)_minmax\(70px\,_1fr\)\] {
+    grid-template-columns: content minmax(70px, 1fr) minmax(70px, 1fr);
+  }
+  .grid-cols-\[fit-content\(20\%\)_minmax\(70px\,_1fr\)_minmax\(70px\,_1fr\)\] {
+    grid-template-columns: fit-content(20%) minmax(70px, 1fr) minmax(70px, 1fr);
+  }
+  .grid-cols-\[fit-content\(40\%\)_minmax\(70px\,_1fr\)_minmax\(70px\,_1fr\)\] {
+    grid-template-columns: fit-content(40%) minmax(70px, 1fr) minmax(70px, 1fr);
+  }
+  .grid-cols-\[min-content_minmax\(70px\,_1fr\)_minmax\(70px\,_1fr\)\] {
+    grid-template-columns: min-content minmax(70px, 1fr) minmax(70px, 1fr);
+  }
+  .grid-cols-\[minmax\(0\,3fr\)_minmax\(70px\,_1fr\)_minmax\(70px\,_1fr\)\] {
+    grid-template-columns: minmax(0,3fr) minmax(70px, 1fr) minmax(70px, 1fr);
+  }
   .flex-col {
     flex-direction: column;
   }
@@ -1769,6 +1801,9 @@
   }
   .self-center {
     align-self: center;
+  }
+  .overflow-hidden {
+    overflow: hidden;
   }
   .overflow-x-scroll {
     overflow-x: scroll;
@@ -1916,6 +1951,18 @@
     --tw-font-weight: var(--font-weight-medium);
     font-weight: var(--font-weight-medium);
   }
+  .text-nowrap {
+    text-wrap: nowrap;
+  }
+  .overflow-ellipsis {
+    text-overflow: ellipsis;
+  }
+  .text-ellipsis {
+    text-overflow: ellipsis;
+  }
+  .whitespace-nowrap {
+    white-space: nowrap;
+  }
   .link-accent {
     color: var(--color-accent);
     @media (hover: hover) {
@@ -2020,6 +2067,15 @@
       }
     }
   }
+  .transition-colors {
+    transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke, --tw-gradient-from, --tw-gradient-via, --tw-gradient-to;
+    transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
+    transition-duration: var(--tw-duration, var(--default-transition-duration));
+  }
+  .duration-150 {
+    --tw-duration: 150ms;
+    transition-duration: 150ms;
+  }
   .btn-outline {
     &:not( .btn-active, :hover, :active:focus, :focus-visible, :disabled, [disabled], .btn-disabled, :checked ) {
       --btn-shadow: "";
@@ -2062,6 +2118,16 @@
   }
   .radio-accent {
     --input-color: var(--color-accent);
+  }
+  .hover\:text-base-content\/60 {
+    &:hover {
+      @media (hover: hover) {
+        color: var(--color-base-content);
+        @supports (color: color-mix(in lab, red, red)) {
+          color: color-mix(in oklab, var(--color-base-content) 60%, transparent);
+        }
+      }
+    }
   }
   .sm\:flex {
     @media (width >= 40rem) {
@@ -2150,6 +2216,16 @@
   .lg\:hidden {
     @media (width >= 64rem) {
       display: none;
+    }
+  }
+  .lg\:h-10 {
+    @media (width >= 64rem) {
+      height: calc(var(--spacing) * 10);
+    }
+  }
+  .lg\:w-10 {
+    @media (width >= 64rem) {
+      width: calc(var(--spacing) * 10);
     }
   }
   .lg\:flex-row-reverse {
@@ -2477,6 +2553,10 @@
   inherits: false;
   initial-value: solid;
 }
+@property --tw-duration {
+  syntax: "*";
+  inherits: false;
+}
 @layer properties {
   @supports ((-webkit-hyphens: none) and (not (margin-trim: inline))) or ((-moz-orient: inline) and (not (color:rgb(from red r g b)))) {
     *, ::before, ::after, ::backdrop {
@@ -2497,6 +2577,7 @@
       --tw-ring-offset-color: #fff;
       --tw-ring-offset-shadow: 0 0 #0000;
       --tw-outline-style: solid;
+      --tw-duration: initial;
     }
   }
 }
