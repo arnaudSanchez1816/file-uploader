@@ -86,6 +86,7 @@ app.use((req, res, next) => {
 app.use("/home", isAuthenticated(), require("./routes/home"))
 app.use("/files", isAuthenticated(), require("./routes/files"))
 app.use("/folders", isAuthenticated(), require("./routes/folders"))
+app.use("/shared", require("./routes/shared"))
 app.use("/", require("./routes/user"))
 app.use("/", require("./routes/index"))
 

@@ -8,6 +8,7 @@ export default [
         input: [
             "js/index.js",
             "js/folder.js",
+            "js/sharedFolder.js",
             "js/signup.js",
             "js/header.js",
             "js/sidebar.js",

@@ -46,7 +46,18 @@ model File {
   parent File? @relation("ChildFiles", fields: [parentId], references: [id], onDelete: Cascade)
   childFiles File[] @relation("ChildFiles")
 
+  shared SharedFile[]
+
   @@map("files")
+}
+
+model SharedFile {
+    id   String @id @default(ulid())
+    fileId Int @map("file_id")
+    expiresAt DateTime? @db.Timestamptz @map("expires_at")
+    file File @relation(fields: [fileId], references: [id], onDelete: Cascade)
+
+    @@map("shared_files")
 }
 
 enum FileType {

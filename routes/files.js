@@ -7,5 +7,6 @@ router.post("/", fileController.uploadFile)
 router.delete("/:fileId", fileController.deleteFile)
 router.get("/:fileId", fileController.downloadFile)
 router.post("/:fileId/move", fileController.moveFile)
+//router.post("/:fileId/share", fileController.shareFile)
 
 module.exports = router

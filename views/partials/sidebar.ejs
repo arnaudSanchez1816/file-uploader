@@ -1,4 +1,5 @@
 <div class="bg-base-200 h-full w-full">
+    <% if (!sharedFolder) { %>
     <ul class="menu bg-base-200 rounded-box w-full">
         <li>
             <button type="button" class="open-new-file">
@@ -44,7 +45,7 @@
         </li>
         <% if (locals.folder && locals.folder.id) { %>
         <li>
-            <a>
+            <button type="button" class="open-share-folder">
                 <svg
                     width="100%"
                     height="100%"
@@ -62,7 +63,7 @@
                     />
                 </svg>
                 Share folder
-            </a>
+            </button>
         </li>
         <li>
             <button type="button" class="open-delete-folder">
@@ -87,6 +88,7 @@
         </li>
         <% } %>
     </ul>
+    <% } %>
     <div class="overflow-x-scroll max-w-full">
         <%- include('./components/fileTree.ejs', {sidebarTree, breadcrumbs}) %>
     </div>

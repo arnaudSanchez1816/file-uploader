@@ -118,3 +118,7 @@ async function deleteFolderTree(folderTree) {
 exports.moveIntoFolder = async (folderId, newParentId) => {
     return folderRepository.moveIntoFolder(folderId, newParentId)
 }
+
+exports.shareFolder = async (folderId, expirationDate) => {
+    return folderRepository.shareFolder(folderId, expirationDate)
+}

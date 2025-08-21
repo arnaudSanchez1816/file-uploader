@@ -6,6 +6,7 @@ const {
 } = require("express-validator")
 const folderService = require("../services/folderService")
 const createHttpError = require("http-errors")
+const { addDays } = require("date-fns")
 
 exports.getFolder = [
     param("folderId")
@@ -128,5 +129,48 @@ exports.moveFolder = [
             return res.redirect("/home")
         }
         return res.redirect(`/folders/${newParentId}`)
+    },
+]
+
+// Unlimited, 1 day, 30 days
+const VALID_DURATIONS = [0, 1, 30]
+
+exports.shareFolder = [
+    param("folderId").exists().isInt({ min: 1 }).toInt(),
+    body("duration")
+        .exists()
+        .isInt()
+        .toInt()
+        .customSanitizer((value) => VALID_DURATIONS.includes(value))
+        .withMessage("Invalid share duration."),
+    async (req, res, next) => {
+        const errors = validationResult(req)
+        if (!errors.isEmpty()) {
+            throw new createHttpError.BadRequest()
+        }
+
+        const userId = req.user.id
+        const { folderId, duration } = matchedData(req)
+
+        const folder = await folderService.getFolderById(folderId)
+        if (!folder) {
+            throw new createHttpError.NotFound()
+        }
+
+        if (folder.ownerId !== userId) {
+            throw new createHttpError.Unauthorized()
+        }
+
+        const expirationDate =
+            duration !== 0 ? addDays(new Date(), duration) : null
+        const sharedFolder = await folderService.shareFolder(
+            folderId,
+            expirationDate
+        )
+
+        const responseJson = {
+            sharedUrl: `${req.protocol}://${req.hostname}/shared/${sharedFolder.id.toString()}}`,
+        }
+        res.status(201).json(responseJson)
     },
 ]

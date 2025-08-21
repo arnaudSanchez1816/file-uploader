@@ -15,7 +15,7 @@ class FileDetailsDialog {
         }
     }
 
-    showFile({ id, name, createdAt, size }) {
+    showFile({ id, name, createdAt, size, link }) {
         if (!this.#dialog) {
             console.error("File details dialog element is invalid !")
             return
@@ -33,10 +33,12 @@ class FileDetailsDialog {
         fileCreated.forEach((element) => (element.textContent = createdAt))
 
         const downloadLink = dialog.querySelector("a.download")
-        downloadLink.href = `/files/${id}`
+        downloadLink.href = link
 
         const deleteForm = dialog.querySelector("form.delete")
-        deleteForm.action = `/files/${id}?_method=DELETE`
+        if (deleteForm) {
+            deleteForm.action = `/files/${id}?_method=DELETE`
+        }
 
         dialog.showModal()
     }

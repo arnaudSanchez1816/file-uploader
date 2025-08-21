@@ -10,9 +10,11 @@
             <a href="" role="button" class="download btn btn-primary"
                 >Download</a
             >
+            <% if (!isSharedFolder) { %>
             <form method="post" action="" class="delete">
                 <button type="submit" class="btn btn-error">Delete</button>
             </form>
+            <% } %>
             <form method="dialog">
                 <button class="btn">Close</button>
             </form>

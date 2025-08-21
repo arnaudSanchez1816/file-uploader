@@ -1,4 +1,16 @@
-const prisma = require("../db/client")
+const prisma = require("../db/client").$extends({
+    result: {
+        file: {
+            link: {
+                compute(file) {
+                    return file.type === FileType.FILE
+                        ? `/files/${file.id}`
+                        : `/folders/${file.id}`
+                },
+            },
+        },
+    },
+})
 const { FileType } = require("../generated/prisma/client")
 const { getFolderTree } = require("../generated/prisma/sql")
 const { folderArrayToTree } = require("../utils/prismaUtils")
@@ -64,4 +76,15 @@ exports.moveIntoFolder = async (folderId, newParentId) => {
     })
 
     return folder
+}
+
+exports.shareFolder = async (folderId, expirationDate) => {
+    const sharedFolder = await prisma.sharedFile.create({
+        data: {
+            fileId: folderId,
+            expiresAt: expirationDate,
+        },
+    })
+
+    return sharedFolder
 }

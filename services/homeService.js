@@ -1,5 +1,17 @@
-const prisma = require("../db/client")
 const { FileType } = require("../generated/prisma/client")
+const prisma = require("../db/client").$extends({
+    result: {
+        file: {
+            link: {
+                compute(file) {
+                    return file.type === FileType.FILE
+                        ? `/files/${file.id}`
+                        : `/folders/${file.id}`
+                },
+            },
+        },
+    },
+})
 const { getAllFoldersTree } = require("../generated/prisma/sql")
 const { stringifyBigInt } = require("../utils/jsonUtils")
 
@@ -58,23 +70,36 @@ function getHomeBreadcrumbs() {
     return breadCrumbs
 }
 
-exports.getSidebarFoldersTree = async (userId) => {
+exports.getSidebarFoldersTree = async (userId, rootId = null) => {
     const allFolders = await prisma.$queryRaw(getAllFoldersTree(userId))
-    return parseToSidebarFoldersTree(allFolders)
+    return parseToSidebarFoldersTree(allFolders, rootId)
 }
 
-function parseToSidebarFoldersTree(allFolders) {
-    let map = {},
-        root = { id: -1, name: "Home", folders: [] }
-    map[-1] = root
+function parseToSidebarFoldersTree(allFolders, rootId = null) {
+    let root = { id: -1, name: "Home", folders: [], link: "/home" }
+    if (rootId !== null) {
+        const rootFolder = allFolders.filter((f) => f.id === rootId)[0]
+        if (!rootFolder) {
+            throw new Error(`Failed to find root folder with id ${rootId}`)
+        }
+        root = rootFolder
+    }
+
+    let map = {}
+    map[root.id] = root
 
     for (let i = 0; i < allFolders.length; ++i) {
         const node = allFolders[i]
         map[node.id] = node
         node.folders = []
+        node.link = `/folders/${node.id}`
 
-        const parent = map[node.parentId || -1]
-        parent.folders.push(node)
+        // home "folder" is represented by id -1
+        const parentId = node.parentId || -1
+        const parent = map[parentId]
+        if (parent) {
+            parent.folders.push(node)
+        }
     }
     return root
 }

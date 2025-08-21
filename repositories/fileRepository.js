@@ -8,6 +8,11 @@ const prisma = require("../db/client").$extends({
                     return computeFilePath(file.id)
                 },
             },
+            link: {
+                compute(file) {
+                    return `/files/${file.id}`
+                },
+            },
         },
     },
 })

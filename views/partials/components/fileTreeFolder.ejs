@@ -5,11 +5,7 @@
 >
     <summary class="relative"
     >
-        <% let folderLink = "/home" %>
-        <% if (folder && folder.id >= 0 ) { %>
-        <% folderLink = `/folders/${folder.id}` %>
-        <% } %>
-        <a href="<%= folderLink %>" class="flex w-full gap-2 col-span-2">
+        <a href="<%= folder.link %>" class="flex w-full gap-2 col-span-2">
             <svg
                 width="100%"
                 height="100%"

@@ -8,6 +8,7 @@ router
     .get(folderController.getFolder)
     .delete(folderController.deleteFolder)
 router.post("/:folderId/move", folderController.moveFolder)
+router.post("/:folderId/share", folderController.shareFolder)
 router.post("/", folderController.createFolder)
 
 module.exports = router

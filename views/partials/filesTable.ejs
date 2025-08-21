@@ -17,9 +17,9 @@
     <% } else { %>
     <% files.forEach(file => { %>
     <% if(file.type === FileType.FILE) {%>
-    <%- include('components/file.ejs', { file}) %>
+    <%- include('components/file.ejs', {sharedFolder, file}) %>
     <% } else { %>
-    <%- include('components/folder.ejs', { folder:file }) %>
+    <%- include('components/folder.ejs', {sharedFolder, folder:file }) %>
     <% } %>
     <% }) %>
     <% } %>
