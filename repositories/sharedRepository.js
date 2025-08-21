@@ -6,15 +6,21 @@ exports.getShared = async (sharedId) => {
             id: sharedId,
         },
         include: {
-            file: true,
+            file: {
+                include: {
+                    owner: true,
+                },
+            },
         },
     })
 
-    const currentDate = new Date()
-    if (shared.expiresAt < currentDate) {
-        // Shared link is expired
-        await this.deleteShared(sharedId)
-        return null
+    if (shared) {
+        const currentDate = new Date()
+        if (shared.expiresAt < currentDate) {
+            // Shared link is expired
+            await this.deleteShared(sharedId)
+            return null
+        }
     }
 
     return shared
