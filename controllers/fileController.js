@@ -84,13 +84,12 @@ exports.deleteFile = [
         try {
             const errors = validationResult(req)
 
+            if (!errors.isEmpty()) {
+                throw new createHttpError.BadRequest()
+            }
+
             const { fileId } = matchedData(req)
             const userId = req.user.id
-
-            if (!errors.isEmpty()) {
-                req.flash("error", { msg: "Something wrong happened." })
-                return res.redirect("/home")
-            }
 
             const file = await fileService.getFileById(fileId)
             if (!file) {
@@ -101,7 +100,9 @@ exports.deleteFile = [
             }
 
             await fileService.deleteFile(userId, fileId)
-            res.redirect("/home")
+            res.redirect(
+                file.parentId !== null ? `/folders/${file.parentId}` : "/home"
+            )
         } catch (error) {
             next(error)
         }
