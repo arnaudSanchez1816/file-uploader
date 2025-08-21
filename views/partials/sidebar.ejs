@@ -1,5 +1,5 @@
 <div class="bg-base-200 h-full w-full">
-    <% if (!sharedFolder) { %>
+    <% if (!locals.sharedDetails) { %>
     <ul class="menu bg-base-200 rounded-box w-full">
         <li>
             <button type="button" class="open-new-file">
@@ -88,8 +88,17 @@
         </li>
         <% } %>
     </ul>
+    <% } else { %>
+    <div>
+        <h1 class="font-medium text-xl mb-2"><%= sharedDetails.name %></h1>
+        <div>
+            <p class="text-base-content/60 text-xs">Available until</p>
+            <p><%= sharedDetails.expiresAt.toDateString() %></p>
+        </div>
+    </div>
     <% } %>
-    <div class="overflow-x-scroll max-w-full">
+    <div class="divider"></div>
+    <div class="overflow-x-scroll overflow-y-scroll h-full max-w-full">
         <%- include('./components/fileTree.ejs', {sidebarTree, breadcrumbs}) %>
     </div>
 </div>

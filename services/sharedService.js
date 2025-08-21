@@ -45,11 +45,17 @@ exports.getFolderData = async (sharedId, folderId = null) => {
     const sidebarTree = await getSidebarFoldersTree(sharedOwnerId, sharedRootId)
     updateSidebarTreeFolderLinks(sidebarTree, sharedId)
 
+    const sharedDetails = {
+        expiresAt: shared.expiresAt,
+        name: shared.file.name,
+    }
+
     return {
         folder,
         filesJson,
         sidebarTree,
         breadcrumbs,
+        sharedDetails,
     }
 }
 

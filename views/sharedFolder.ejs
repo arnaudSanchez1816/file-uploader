@@ -26,7 +26,7 @@
                 class="menu bg-base-200 text-base-content min-h-full w-60 md:w-80 p-4 lg:border-r-2 border-base-content/20"
             >
                 <!-- Sidebar content here -->
-                <%- include('./partials/sidebar.ejs', {sharedFolder : true, folder : locals.folder, sidebarTree, breadcrumbs}) %>
+                <%- include('./partials/sidebar.ejs', {sharedDetails, folder : locals.folder, sidebarTree, breadcrumbs}) %>
             </ul>
         </div>
     </div>
@@ -55,5 +55,5 @@
         <%- locals.filesJson || [] %>
     </script>
 </main>
-<%- include('partials/fileDetails.ejs', {isSharedFolder : true}) %>
+<%- include('partials/fileDetails.ejs', {sharedFolder : true}) %>
 <%- include('partials/footer.ejs') %>
