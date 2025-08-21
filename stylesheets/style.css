@@ -8,3 +8,5 @@
     prefix:;
     logs: true;
 }
+@source inline("outline-hidden");
+@source inline("outline-dotted");
