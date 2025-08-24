@@ -28,7 +28,7 @@
     "deploy": "npx prisma migrate deploy",
     "migrate": "npx prisma migrate dev --name $npm_config_name",
     "generate": "npx prisma generate --sql",
-    "clean": "rm -r ./public/scripts && rm ./public/index.css && rm -r ./generated"
+    "clean": "rm -rf ./public/scripts && rm -f ./public/index.css && rm -rf ./generated"
   },
   "dependencies": {
     "@prisma/client": "^6.13.0",
