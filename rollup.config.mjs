@@ -6,12 +6,12 @@ import json from "@rollup/plugin-json"
 export default [
     {
         input: [
-            "js/index.js",
-            "js/folder.js",
-            "js/sharedFolder.js",
-            "js/signup.js",
-            "js/header.js",
-            "js/sidebar.js",
+            "src/client/views/index.js",
+            "src/client/views/folder.js",
+            "src/client/views/sharedFolder.js",
+            "src/client/views/signup.js",
+            "src/client/views/header.js",
+            "src/client/views/sidebar.js",
         ],
         output: {
             dir: "public",
