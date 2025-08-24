@@ -17,7 +17,7 @@
     "prebuild": "npm run clean",
     "build": "npm run generate && npm run bundle && npm run tailwind",
     "start": "node ./src/index.js",
-    "start:watch": "npm run start -- --watch", 
+    "start:watch": "npm run start -- --watch",
     "dev": "run-p *:watch",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint .",
@@ -55,17 +55,18 @@
     "passport": "^0.7.0",
     "passport-local": "^1.0.0",
     "pg": "^8.16.0",
-    "sanitize-filename": "^1.6.3"
-  },
-  "devDependencies": {
-    "@eslint/js": "^9.28.0",
+    "sanitize-filename": "^1.6.3",
+    "tailwindcss": "^4.1.11",
+    "@tailwindcss/cli": "^4.1.11",
+    "daisyui": "^5.0.50",
+    "rollup": "^4.46.2",
     "@rollup/plugin-commonjs": "^28.0.6",
     "@rollup/plugin-json": "^6.1.0",
     "@rollup/plugin-node-resolve": "^16.0.1",
-    "@rollup/plugin-terser": "^0.4.4",
-    "@shoelace-style/shoelace": "^2.20.1",
-    "@tailwindcss/cli": "^4.1.11",
-    "daisyui": "^5.0.50",
+    "@rollup/plugin-terser": "^0.4.4"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.28.0",
     "eslint": "^9.28.0",
     "eslint-config-prettier": "^10.1.5",
     "globals": "^16.2.0",
@@ -74,9 +75,7 @@
     "prettier-plugin-ejs": "^1.0.3",
     "prettier-plugin-tailwindcss": "^0.6.13",
     "prisma": "^6.13.0",
-    "rollup": "^4.46.2",
     "stylelint": "^16.20.0",
-    "stylelint-config-standard": "^38.0.0",
-    "tailwindcss": "^4.1.11"
+    "stylelint-config-standard": "^38.0.0"
   }
 }
