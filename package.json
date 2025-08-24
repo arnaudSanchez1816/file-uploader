@@ -14,18 +14,20 @@
   "type": "commonjs",
   "main": "./src/index.js",
   "scripts": {
-    "build": "npm run bundle && npm run tailwind",
-    "start": "node --watch ./src/index.js",
-    "dev": "node --watch ./src/index.js",
+    "build": "npm run clean && npm run bundle && npm run tailwind",
+    "start": "node ./src/index.js",
+    "start:watch": "npm run start -- --watch", 
+    "dev": "run-p *:watch",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint .",
     "bundle": "rollup --config --bundleConfigAsCjs",
     "bundle:watch": "rollup --watch --config --bundleConfigAsCjs",
-    "tailwind" : "npx @tailwindcss/cli -i ./src/stylesheets/style.css -o ./public/index.css",
+    "tailwind": "npx @tailwindcss/cli -i ./src/stylesheets/style.css -o ./public/index.css",
     "tailwind:watch": "npm run tailwind -- --watch",
     "deploy": "npx prisma migrate deploy",
     "migrate": "npx prisma migrate dev --name $npm_config_name",
-    "generate": "npx prisma generate --sql"
+    "generate": "npx prisma generate --sql",
+    "clean": "rm -r ./public/scripts && rm ./public/index.css"
   },
   "dependencies": {
     "@prisma/client": "^6.13.0",
@@ -66,6 +68,7 @@
     "eslint": "^9.28.0",
     "eslint-config-prettier": "^10.1.5",
     "globals": "^16.2.0",
+    "npm-run-all": "^4.1.5",
     "prettier": "^3.5.3",
     "prettier-plugin-ejs": "^1.0.3",
     "prettier-plugin-tailwindcss": "^0.6.13",
